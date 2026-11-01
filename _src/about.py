@@ -12,8 +12,12 @@ FAQS_ABOUT = [
 def build():
     flow = "".join(f'<li><strong>{s}</strong><span class="arr" aria-hidden="true">{icon("arrow-r")}</span></li>' for s in ["Education","Awareness","Engagement","Partnerships","Action","Recognition"])
     cta = "".join(f'<li>{s}</li>' for s in ["Adopt LiFE initiatives","Encourage a shift to renewable and cleaner energies","Minimise plastic use and manage plastic waste","Expand ways to reduce soil, water and air pollution","Expand the green canopy","Invest in widening the green economy","Promote climate education","Encourage natural farming practices"])
-    tl = [("2010","Inception","gallery-1.jpg"),("2015","[Milestone — to be supplied]","gallery-5.jpg"),("2020","Online","gallery-4.jpg"),("20XX","[Milestone — to be supplied]","gallery-2.jpg")]
-    tli = "".join(f'<li class="tl-item reveal"><span class="yr">{y}</span><figure class="frame ratio-43 archival"><div class="fi">{picture(img, "Earth Day through the years — archival-style placeholder photo", "(max-width:640px) 100vw, 25vw")}</div></figure><p>{t}</p></li>' for y,t,img in tl)
+    tl = [("1970","Global Earth Day movement begins","about-timeline-1970.jpg"),
+          ("2010","Earth Day Network India established","about-timeline-2010.jpg"),
+          ("2020","50th Anniversary digital mobilisation","about-timeline-2020.jpg"),
+          ("2026","Active across all Indian states","about-timeline-2026.jpg"),
+          ("2027","Food for Our Planet™ campaign","about-timeline-2027.jpg")]
+    tli = "".join(f'<li class="tl-item reveal"><span class="yr">{y}</span><figure class="frame ratio-43 archival"><div class="fi">{picture(img, f"Earth Day through the years ({y}) — {t}", "(max-width:640px) 100vw, 25vw")}</div></figure><p>{t}</p></li>' for y,t,img in tl)
 
     # FAQ accordion items
     faq_items = []
@@ -30,7 +34,7 @@ def build():
 </div>''')
     faq_html = "".join(faq_items)
 
-    body = f'''{page_hero("About", f"About {ORG}", "Earth Day, Every Day — Educate. Inspire. Mobilise. Act—for Our Planet", "program-climate.jpg", f"Sundarbans mangroves — {ORG}, environmental organisation in India", "about.html")}
+    body = f'''{page_hero("About", "About Earth Day India", "Learn how our nationwide network inspires citizens to protect the living environment across all Indian states.", "program-climate.jpg", f"Sundarbans mangroves — {ORG}, environmental organisation in India", "about.html")}
 <section class="section paper-white" aria-labelledby="who-h"><div class="wrap editorial">
  <div class="side">{eyebrow("About us","left")}<h2 id="who-h">Earth Day, Every Day</h2><p>Educate. Inspire. Mobilise. Act—for Our Planet</p></div>
  <div class="reveal">

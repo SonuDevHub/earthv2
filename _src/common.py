@@ -82,6 +82,20 @@ def contact_value(k, label):
 # ---------- Responsive images ----------
 WIDTHS = [480, 800, 1200, 1800]
 _dims = {}
+def get_image_group(name):
+    base = os.path.splitext(name)[0]
+    if base.startswith("hero-"): return "hero"
+    if base.startswith("program-") or base == "programs-main": return "programs"
+    if base.startswith("award-"): return "awards"
+    if base.startswith("network-"): return "network"
+    if base.startswith("event-"): return "events"
+    if base.startswith("resource-"): return "resources"
+    if base.startswith("gallery-"): return "gallery"
+    if base.startswith("about-") or base.startswith("home-page-picture-"): return "about"
+    if base.startswith("show-panel-") or base.startswith("partner-"): return "partners"
+    if base.startswith("theme-"): return "theme"
+    return "about"
+
 def src_dims(name):
     if name not in _dims:
         with Image.open(os.path.join(SRC, "img", name)) as im: _dims[name] = im.size
@@ -93,7 +107,8 @@ def variants(name):
 def picture(name, alt, sizes="100vw", cls="", eager=False, img_cls=""):
     ws, w0, h0 = variants(name)
     base = os.path.splitext(name)[0]
-    ss = lambda ext: ", ".join(f"assets/img/{base}-{w}.{ext} {w}w" for w in ws)
+    grp = get_image_group(name)
+    ss = lambda ext: ", ".join(f"assets/img/{grp}/{base}-{w}.{ext} {w}w" for w in ws)
     wmax = ws[-1]; hmax = round(h0 * wmax / w0)
     mid = [w for w in ws if w >= 800]; fb = mid[0] if mid else ws[-1]
     load = 'fetchpriority="high" decoding="async"' if eager else 'loading="lazy" decoding="async"'
@@ -101,7 +116,7 @@ def picture(name, alt, sizes="100vw", cls="", eager=False, img_cls=""):
     ic = f' class="{img_cls}"' if img_cls else ''
     return (f'<picture{c}><source type="image/avif" srcset="{ss("avif")}" sizes="{sizes}">'
             f'<source type="image/webp" srcset="{ss("webp")}" sizes="{sizes}">'
-            f'<img{ic} src="assets/img/{base}-{fb}.jpg" srcset="{ss("jpg")}" sizes="{sizes}" width="{wmax}" height="{hmax}" alt="{e(alt)}" {load}></picture>')
+            f'<img{ic} src="assets/img/{grp}/{base}-{fb}.jpg" srcset="{ss("jpg")}" sizes="{sizes}" width="{wmax}" height="{hmax}" alt="{e(alt)}" {load}></picture>')
 
 # ---------- Structured data ----------
 def org_ld():
@@ -140,7 +155,7 @@ def header(active):
             items.append(f'<li class="has-dd{act}"><a class="top" href="{href}"{cur}>{e(label)}</a><button class="dd-btn" type="button" aria-expanded="false" aria-controls="{mid}"><span class="sr-only">{e(label)} submenu</span>{icon("chev-d")}</button><ul class="dropdown" id="{mid}">{dd}</ul></li>')
         else:
             items.append(f'<li class="{act.strip()}"><a class="top" href="{href}"{cur}>{e(label)}</a></li>')
-    items.append('<li><a class="top" href="#contact">Contact</a></li>')
+    items.append('<li><a class="top nav-contact-link" href="#contact">Contact</a></li>')
     return f'''<a class="skip" href="#main">Skip to content</a>
 <aside class="utility" aria-label="Tagline"><div class="wrap"><span>Inspired by the global EARTHDAY.ORG movement</span><span class="accent">Earth Day, Every Day</span></div></aside>
 <header class="site-header"><div class="wrap header-inner">
@@ -171,36 +186,95 @@ def netlify_form(name, prefix, fields_html, submit, cls="", note=""):
 </div></form>'''
 
 def footer():
-    ff = field("ft-name","name","Name",auto="name") + field("ft-email","email","Email","email",auto="email") + field("ft-msg","message","Message","textarea",full=True)
     nl_f = field("nl-email","email","Email address","email",auto="email")
     return f'''<footer class="site-footer" id="contact">
 <div class="wrap">
-<div class="footer-top">
- <div>
-  <div class="footer-logos"><a href="index.html" aria-label="{ORG} — Home"><picture><source type="image/webp" srcset="assets/logos/logo-white-216.webp 2x"><img src="assets/logos/logo-white-216.png" width="108" height="64" alt="{ORG} logo" loading="lazy"></picture></a><div class="theme-logo-slot">Theme logo<br>(to be supplied)</div></div>
-  <p>{ORG} is a registered trust inspired by the global EARTHDAY.ORG movement.</p>
-  <p><a class="link-arrow" href="{GLOBAL_THEME_URL}" target="_blank" rel="noopener">Earth Day 2027 global theme {icon("ext")}<span class="sr-only"> (opens in a new tab)</span></a></p>
-  <div class="footer-newsletter">
-   <h2>Newsletter</h2>
+ <!-- Row 1: Slim CTA Strip -->
+ <div class="footer-cta-strip">
+  <span class="footer-cta-text">Earth Day, every day.</span>
+  <div class="footer-cta-btns">
+   <a class="btn" href="join-us.html#partner">Partner With Us {ARROW}</a>
+   <a class="btn" href="join-us.html">Join Us {ARROW}</a>
+  </div>
+ </div>
+
+ <!-- Row 2: 12-Column Desktop Grid -->
+ <div class="footer-main-grid">
+  <!-- Brand Block (col 4) -->
+  <div class="footer-col footer-col-brand">
+   <div class="footer-logos">
+    <a href="index.html" aria-label="{ORG} — Home">
+     <picture>
+      <source type="image/webp" srcset="assets/logos/logo-white-216.webp 2x">
+      <img src="assets/logos/logo-white-216.png" width="108" height="64" alt="{ORG} logo" loading="lazy">
+     </picture>
+    </a>
+    <div class="theme-logo-slot">Earth Day 2027<br><small>Theme logo (to be supplied)</small></div>
+   </div>
+   <p class="footer-brand-desc">{ORG} is an environmental organisation inspired by the global EARTHDAY.ORG movement.</p>
+   <p class="footer-regs">Holds NITI Aayog NGO Darpan, 12A registration under the Income Tax Act, and MCA CSR-1 certification.</p>
+   <p class="footer-global-link"><a class="link-arrow" href="{GLOBAL_THEME_URL}" target="_blank" rel="noopener">Earth Day 2027 global theme {icon("ext")}<span class="sr-only"> (opens in a new tab)</span></a></p>
+  </div>
+
+  <!-- Explore (col 2) -->
+  <nav class="footer-col footer-col-nav" aria-label="Explore navigation">
+   <h3>Explore</h3>
+   <ul>
+    <li><a href="about.html">About</a></li>
+    <li><a href="programs.html">Programs</a></li>
+    <li><a href="network.html">Network</a></li>
+    <li><a href="awards.html">Awards</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="join-us.html">Join Us</a></li>
+   </ul>
+  </nav>
+
+  <!-- Programs (col 2) -->
+  <nav class="footer-col footer-col-nav" aria-label="Programs navigation">
+   <h3>Programs</h3>
+   <ul>
+    <li><a href="programs.html#climate">Climate Literacy</a></li>
+    <li><a href="programs.html#canopy">Canopy Project</a></li>
+    <li><a href="programs.html#plastics">End Plastics</a></li>
+    <li><a href="programs.html#cleanup">Great Global Cleanup</a></li>
+    <li><a href="programs.html#food">Food & Agriculture</a></li>
+    <li><a href="programs.html#cities">Sustainable Cities</a></li>
+   </ul>
+  </nav>
+
+  <!-- Contact (col 2) -->
+  <div class="footer-col footer-col-contact">
+   <h3>Contact</h3>
+   <ul class="contact-list">
+    <li><b class="cl">Address</b>{contact_value("address","Postal address")}</li>
+    <li><b class="cl">Email</b>{contact_value("email","Email")}</li>
+    <li><b class="cl">Phone</b>{contact_value("phone","Phone")}</li>
+   </ul>
+  </div>
+
+  <!-- Newsletter (col 2) -->
+  <div class="footer-col footer-col-newsletter">
+   <h3>Newsletter</h3>
    <p class="nl-note">Subscribe for updates on environmental actions across India.</p>
    {netlify_form("newsletter","nl",nl_f,"Subscribe",cls="nl-form")}
   </div>
  </div>
- <nav aria-label="Footer"><h2>Explore</h2><ul>
-  <li><a href="about.html">About</a></li><li><a href="programs.html">Programs</a></li><li><a href="network.html">Network</a></li><li><a href="awards.html">Awards</a></li><li><a href="events.html">Events</a></li><li><a href="resources.html">Resources</a></li><li><a href="join-us.html">Join Us</a></li></ul></nav>
- <div><h2>Contact</h2><ul class="contact-list">
-  <li><b class="cl">Address</b>{contact_value("address","Postal address")}</li>
-  <li><b class="cl">Email</b>{contact_value("email","Email")}</li>
-  <li><b class="cl">Phone</b>{contact_value("phone","Phone")}</li></ul>
-  <ul class="social-row">{"".join(f"<li>{social_link(k)}</li>" for k in SOCIAL_SVG)}</ul>
+
+ <!-- Row 3: Legal Bar -->
+ <div class="footer-legal-bar">
+  <div class="footer-legal-left">
+   <span>&copy; <span id="year">2026</span> {ORG}. All rights reserved.</span>
+   <ul class="footer-legal-links">
+    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+    <li><a href="terms.html">Terms of Use</a></li>
+    <li><a href="credits.html">Photo Credits</a></li>
+   </ul>
+  </div>
+  <ul class="footer-social-icons">
+   {"".join(f"<li>{social_link(k)}</li>" for k in SOCIAL_SVG)}
+  </ul>
  </div>
- <div class="footer-form"><h2>Write to us</h2>{netlify_form("contact","ft",ff,"Send message")}</div>
-</div>
-<div class="registrations">
- <ul class="badges"><li>NGO Darpan</li><li>12A</li><li>CSR-1</li></ul>
- <p class="mb-0">{ORG} also holds NITI Aayog's NGO Darpan registration and 12A registration under the Government of India's Income Tax Act, and CSR-1 Certification from the Ministry of Corporate Affairs.</p>
-</div>
-<div class="footer-bottom"><span>&copy; <span id="year">2026</span> {ORG}. Earth Day, Every Day.</span><ul><li><a href="privacy-policy.html">Privacy policy</a></li><li><a href="terms.html">Terms of use</a></li><li><a href="credits.html">Photo credits</a></li></ul></div>
 </div>
 </footer>'''
 
@@ -225,7 +299,11 @@ def page(fn, title, desc, active, body, crumbs=None, extra_ld=None, noindex=Fals
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}"><meta property="og:url" content="{canon}">
 <meta property="og:image" content="{og}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="{ORG} — Earth Day, Every Day">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{e(title)}"><meta name="twitter:description" content="{e(desc)}"><meta name="twitter:image" content="{og}">
-<link rel="icon" href="favicon.ico" sizes="32x32"><link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="manifest" href="site.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+<link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 {preload}
 <link rel="stylesheet" href="{ASSETS["css"]}">
 <!-- ANALYTICS SLOT (cookieless). Disabled placeholder — enable ONE after launch and add its host to the CSP in _headers:
@@ -251,10 +329,11 @@ No ad pixels, no GTM. -->
 def eyebrow(t, cls=""): return f'<span class="eyebrow {cls}">{t}</span>'
 def tag(t="Placeholder"): return f'<span class="tag">{t}</span>'
 
-def page_hero(crumb, h1, lede, img, alt, file):
+def page_hero(crumb, h1, lede, img="programs-main.jpg", alt="Earth Day Network India banner", file=""):
     lp = f'<p class="lede">{lede}</p>' if lede else ''
-    return f'''<section class="page-hero"><div class="bg">{picture(img, alt, "100vw", eager=True)}</div><div class="wrap">
-<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="{file}" aria-current="page">{crumb}</a></li></ol></nav><h1>{h1}</h1>{lp}</div></section>'''
+    bg_html = f'<div class="bg">{picture(img, alt, "100vw", eager=True)}</div>' if img else ''
+    crumbs_html = f'<nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li class="curr"><a href="{file}" aria-current="page">{crumb}</a></li></ol></nav>'
+    return f'''<section class="page-hero">{bg_html}<div class="wrap">{crumbs_html}<h1>{h1}</h1>{lp}</div></section>'''
 
 def subnav(items, label="On this page"):
     return f'<nav class="subnav" aria-label="{label}"><ul>' + "".join(f'<li><a href="#{a}">{e(t)}</a></li>' for t, a in items) + '</ul></nav>'

@@ -66,9 +66,17 @@ def build():
     first = "".join(row(i, p) for i, p in enumerate(P[:7]))
     rest = "".join(row(i + 8, p) for i, p in enumerate(P[7:]))
     sn = [("EDO Theme","edo-theme"),("Agriculture","agriculture"),("Canopy","canopy"),("Energy","energy"),("Education","education"),("Youth","youth"),("Cleanup","cleanup"),("Faith Sites","faith-sites"),("Earth Day","earth-day"),("Climate Change","climate-change"),("Women","women"),("Fashion","fashion"),("Partners","partners"),("Gallery","gallery")]
-    body = f'''{page_hero("Programs","Turning Global Priorities into Action in India","Our programmes reflect global Earth Day themes while responding to India's environmental priorities and diverse social realities.","programs-main.jpg",f"Sundarbans mangrove forest — {ORG} programmes, green initiatives India","programs.html")}
+    body = f'''{page_hero("Programs", "Action For Our Planet", "Our key initiatives turn global environmental priorities into active local solutions for people across India.", "programs-main.jpg", f"Sundarbans mangrove forest — {ORG} programmes, green initiatives India", "programs.html")}
 <!-- CLIENT PHOTO: Programs main picture placeholder (_src/img/programs-main.jpg) -->
 {subnav(sn)}
+
+<!-- INTRO SECTION -->
+<section class="section paper-white tight" id="intro"><div class="wrap editorial">
+ <div class="side"><span class="eyebrow left">Overview</span><h2>Turning Global Priorities into Action in India</h2></div>
+ <div><p class="lede strong">Our programmes reflect global Earth Day themes while responding to India's environmental priorities and diverse social realities.</p>
+ <p>By linking education, community initiatives, and grassroots partnerships, our programs foster long-term environmental stewardship from the Himalayas to coastal deltas.</p>
+ </div>
+</div></section>
 
 <!-- STATS STRIP -->
 <section class="section navy tight" id="programs-stats" aria-label="Programmes Impact Figures"><div class="wrap">

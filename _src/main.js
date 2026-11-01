@@ -63,9 +63,31 @@
     });
     li.addEventListener("focusout", function (e) { if (!li.contains(e.relatedTarget) && window.innerWidth > 980) { li.classList.remove("open"); btn.setAttribute("aria-expanded", "false"); } });
   });
-  d.addEventListener("click", function (e) { if (!e.target.closest(".nav")) closeAllDD(); });
-  d.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeAllDD(); if (body.classList.contains("menu-open")) { closeMenu(); toggle.focus(); } } });
-  $$(".nav a").forEach(function (a) { a.addEventListener("click", function () { closeMenu(); closeAllDD(); }); });
+  d.addEventListener("click", function (e) { if (!e.target.closest(".nav") && !e.target.closest(".menu-toggle")) closeAllDD(); });
+  d.addEventListener("keydown", function (e) { if (e.key === "Escape") { closeAllDD(); if (body.classList.contains("menu-open")) { closeMenu(); if (toggle) toggle.focus(); } } });
+  $$(".nav a").forEach(function (a) {
+    a.addEventListener("click", function () {
+      closeMenu();
+      closeAllDD();
+    });
+  });
+  $$(".nav-contact-link, a[href='#contact']").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      closeMenu();
+      closeAllDD();
+      var target = d.getElementById("contact");
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: reduce ? "auto" : "smooth" });
+      }
+    });
+  });
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 980 && body.classList.contains("menu-open")) {
+      closeMenu();
+      closeAllDD();
+    }
+  });
 
   /* ---------- Hero slider (video slide 0 support, keyboard, reduced motion) ---------- */
   var hero = d.querySelector(".hero");
@@ -307,10 +329,13 @@
         var y = (1.0 * Math.cos(phi));
 
         var col = 0xF37321; // Orange
-        var t = (m.type || "").toLowerCase();
-        if (t.indexOf("canopy") !== -1) col = 0x72B5B9;
-        else if (t.indexOf("cleanup") !== -1) col = 0x2F83A6;
-        else if (t.indexOf("education") !== -1 || t.indexOf("literacy") !== -1) col = 0xFDB714;
+        var cat = (m.category || m.type || "").toLowerCase();
+        if (cat.indexOf("forest") !== -1 || cat.indexOf("canopy") !== -1) col = 0x72B5B9;
+        else if (cat.indexOf("cleanup") !== -1) col = 0x2F83A6;
+        else if (cat.indexOf("education") !== -1) col = 0xFDB714;
+        else if (cat.indexOf("agriculture") !== -1) col = 0x47A87A;
+        else if (cat.indexOf("energy") !== -1) col = 0xFDB714;
+        else if (cat.indexOf("youth") !== -1) col = 0xF37321;
 
         var ringMat = new THREE.MeshBasicMaterial({ color: col, side: THREE.DoubleSide, transparent: true, opacity: 0.9 });
         var ring = new THREE.Mesh(new THREE.RingGeometry(0.02, 0.038, 20), ringMat);
@@ -341,11 +366,20 @@
     if (sheetClose) sheetClose.addEventListener("click", function () {
       activeMarker = null;
       if (sheet) sheet.hidden = true;
+      $$(".globe-place-item").forEach(function (b) { b.classList.remove("active"); });
     });
 
     function showSheet(m) {
       if (!sheet || !sheetContent) return;
-      sheetContent.innerHTML = "<h4>" + m.name + "</h4><p><strong>" + m.type + "</strong> — " + m.description + "</p><p style='font-size:0.8rem;color:#FDB714;margin-top:6px;'>" + (m.stats || "") + "</p>";
+      var anc = m.anchor || "programs.html";
+      var catLabel = (m.category || m.type || "Programme").toUpperCase();
+      sheetContent.innerHTML =
+        '<span class="globe-sheet-tag" style="display:inline-block;font-size:0.7rem;font-weight:700;letter-spacing:0.1em;color:var(--orange);text-transform:uppercase;margin-bottom:6px;">' + catLabel + '</span>' +
+        '<h4>' + (m.name || "") + '</h4>' +
+        '<p class="globe-sheet-loc" style="font-size:0.82rem;color:rgba(255,255,255,0.7);margin-bottom:8px;">' + (m.place || "") + '</p>' +
+        '<p class="globe-sheet-desc">' + (m.description || "") + '</p>' +
+        (m.stats ? '<p class="globe-sheet-stats" style="font-size:0.8rem;color:var(--yellow);font-weight:700;margin-top:8px;">' + m.stats + '</p>' : '') +
+        '<div style="margin-top:14px;"><a class="btn" style="padding:8px 18px;font-size:0.75rem;" href="' + anc + '">Explore in Programmes →</a></div>';
       sheet.hidden = false;
     }
 
@@ -396,29 +430,76 @@
           targetRot.x = (phi - Math.PI / 2);
           targetRot.y = -(theta - Math.PI / 2);
           showSheet(m);
+
+          // Highlight corresponding place item
+          $$(".globe-place-item").forEach(function (btn) {
+            var isThis = btn.dataset.id === m.id || btn.dataset.name === m.name;
+            btn.classList.toggle("active", isThis);
+            if (isThis && btn.scrollIntoView) {
+              btn.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "nearest" });
+            }
+          });
         }
       }
     });
 
-    // Filter buttons
-    $$(".globe-filter-btn").forEach(function (btn) {
+    // Map Legend Programme Group Filters
+    $$(".globe-legend-btn, .globe-filter-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
-        $$(".globe-filter-btn").forEach(function (b) { b.classList.remove("active"); });
+        $$(".globe-legend-btn, .globe-filter-btn").forEach(function (b) { b.classList.remove("active"); });
         btn.classList.add("active");
         var cat = (btn.dataset.filter || "all").toLowerCase();
+
+        var visibleCount = 0;
+        var firstMatch = null;
         markerObjs.forEach(function (pin) {
           var m = pin.userData.data; if (!m) return;
-          var match = true;
-          if (cat !== "all") {
-            var t = (m.type || "").toLowerCase(), n = (m.name || "").toLowerCase(), d = (m.description || "").toLowerCase();
-            if (cat === "forests") match = t.indexOf("canopy") !== -1 || n.indexOf("tehri") !== -1 || n.indexOf("bundelkhand") !== -1 || n.indexOf("anantapur") !== -1 || n.indexOf("sundarbans") !== -1;
-            else if (cat === "cleanups") match = t.indexOf("cleanup") !== -1 || n.indexOf("juhu") !== -1 || n.indexOf("dal") !== -1 || n.indexOf("ganga") !== -1;
-            else if (cat === "education") match = t.indexOf("education") !== -1 || n.indexOf("school") !== -1 || n.indexOf("delhi") !== -1;
-            else if (cat === "agriculture") match = t.indexOf("fruit") !== -1 || n.indexOf("anantapur") !== -1 || n.indexOf("lalitpur") !== -1 || n.indexOf("saklana") !== -1;
-            else if (cat === "energy") match = t.indexOf("energy") !== -1 || n.indexOf("energy") !== -1 || n.indexOf("yatra") !== -1;
-          }
+          var match = (cat === "all" || m.category === cat || m.category === "all");
           pin.visible = match;
+          if (match && !firstMatch && m.lat !== undefined && m.category !== "all") firstMatch = m;
         });
+
+        $$(".globe-place-item").forEach(function (it) {
+          var itemCat = (it.dataset.cat || "").toLowerCase();
+          var match = (cat === "all" || itemCat === cat || itemCat === "all");
+          it.style.display = match ? "flex" : "none";
+          if (match) visibleCount++;
+        });
+
+        var countEl = d.getElementById("globe-places-count");
+        if (countEl) countEl.textContent = visibleCount + (visibleCount === 1 ? " location" : " locations");
+
+        if (firstMatch && cat !== "all") {
+          var phi = (90 - firstMatch.lat) * (Math.PI / 180);
+          var theta = (firstMatch.lng + 180) * (Math.PI / 180);
+          targetRot.x = (phi - Math.PI / 2);
+          targetRot.y = -(theta - Math.PI / 2);
+        }
+      });
+    });
+
+    // Interactive Places Directory items
+    $$(".globe-place-item").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        $$(".globe-place-item").forEach(function (b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        var lat = parseFloat(btn.dataset.lat), lng = parseFloat(btn.dataset.lng);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          var phi = (90 - lat) * (Math.PI / 180);
+          var theta = (lng + 180) * (Math.PI / 180);
+          targetRot.x = (phi - Math.PI / 2);
+          targetRot.y = -(theta - Math.PI / 2);
+        }
+        var m = {
+          name: btn.dataset.name,
+          place: btn.dataset.place,
+          category: btn.dataset.cat,
+          description: btn.dataset.desc,
+          stats: btn.dataset.stats,
+          anchor: btn.dataset.anchor
+        };
+        activeMarker = m;
+        showSheet(m);
       });
     });
 
@@ -556,5 +637,83 @@
       });
     });
   });
+
+  /* ---------- Testimonials Slider ---------- */
+  var tSection = d.getElementById("quotes");
+  if (tSection) {
+    var tSlides = $$(".t-slide", tSection), tDots = $$(".t-dot", tSection);
+    var tPrev = tSection.querySelector(".t-prev"), tNext = tSection.querySelector(".t-next");
+    var tTotal = tSlides.length, tIdx = 0, tTimer = null, tHover = false;
+
+    function showTestimonial(idx) {
+      tIdx = (idx + tTotal) % tTotal;
+      tSlides.forEach(function (s, i) {
+        var on = i === tIdx;
+        s.classList.toggle("is-active", on);
+        s.setAttribute("aria-hidden", String(!on));
+      });
+      tDots.forEach(function (dot, i) {
+        var on = i === tIdx;
+        dot.setAttribute("aria-current", String(on));
+      });
+    }
+
+    function stopTestimonial() { clearInterval(tTimer); tTimer = null; }
+    function playTestimonial() {
+      stopTestimonial();
+      if (!reduce && !tHover && tTotal > 1) {
+        tTimer = setInterval(function () { showTestimonial(tIdx + 1); }, 7500);
+      }
+    }
+
+    if (tPrev) tPrev.addEventListener("click", function () { showTestimonial(tIdx - 1); playTestimonial(); });
+    if (tNext) tNext.addEventListener("click", function () { showTestimonial(tIdx + 1); playTestimonial(); });
+
+    tDots.forEach(function (dot, i) {
+      dot.addEventListener("click", function () {
+        showTestimonial(i);
+        playTestimonial();
+      });
+    });
+
+    tSection.addEventListener("mouseenter", function () { tHover = true; stopTestimonial(); });
+    tSection.addEventListener("mouseleave", function () { tHover = false; playTestimonial(); });
+    tSection.addEventListener("focusin", function () { tHover = true; stopTestimonial(); });
+    tSection.addEventListener("focusout", function () { tHover = false; playTestimonial(); });
+
+    tSection.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { showTestimonial(tIdx - 1); playTestimonial(); }
+      else if (e.key === "ArrowRight") { showTestimonial(tIdx + 1); playTestimonial(); }
+    });
+
+    // Touch swipe
+    var tTouchX = 0;
+    tSection.addEventListener("touchstart", function (e) {
+      if (e.touches && e.touches[0]) tTouchX = e.touches[0].clientX;
+    }, { passive: true });
+    tSection.addEventListener("touchend", function (e) {
+      if (!e.changedTouches || !e.changedTouches[0]) return;
+      var diffX = e.changedTouches[0].clientX - tTouchX;
+      if (Math.abs(diffX) > 40) {
+        if (diffX < 0) showTestimonial(tIdx + 1);
+        else showTestimonial(tIdx - 1);
+        playTestimonial();
+      }
+    }, { passive: true });
+
+    // IntersectionObserver to pause autoplay when offscreen
+    if ("IntersectionObserver" in window) {
+      var tObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) playTestimonial();
+          else stopTestimonial();
+        });
+      }, { threshold: 0.1 });
+      tObserver.observe(tSection);
+    }
+
+    showTestimonial(0);
+    playTestimonial();
+  }
 
 })();

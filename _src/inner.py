@@ -1,22 +1,32 @@
+# -*- coding: utf-8 -*-
 from common import *
 
 def profiles(n, role):
     return '<ul class="profiles">' + "".join(f'<li class="profile reveal"><div class="ph">{SILHOUETTE}</div><h3>Name</h3><p>{role} · details to be supplied</p></li>' for _ in range(n)) + '</ul>'
 
 def network():
-    groups = [("ambassadors","Our Ambassadors","Each is an influential individual in their field who also champions the Earth Day movement and helps extend its reach through their networks, platforms, communities, and environmental initiatives. They inspire wider participation, strengthen public awareness and encourage meaningful action.","Ambassador",4),
-              ("advisors","Our Advisors","Our Advisors are distinguished subject-matter experts and experienced professionals who contribute knowledge, insight and strategic guidance across environmental and sustainability issues, strengthening our programmes, initiatives and outreach as needs and opportunities arise.","Advisor",4),
-              ("canopy-experts","Our Experts for the Canopy Project","Each has served at the highest level of their state's forest department, bringing decades of field experience and expertise to guide and strengthen our conservation and restoration initiatives.","Canopy Project expert",4),
-              ("mfmv","MFMV",'My Future My Voice — Youth Ambassadors. <a href="programs.html#my-future-my-voice">Read about the initiative</a>.',"Youth Ambassador",4),
-              ("artists","Artists",None,"Artist",4),
-              ("athletes","Athletes",None,"Athlete",4)]
+    groups = [("ambassadors","Our Ambassadors","Each is an influential individual in their field who also champions the Earth Day movement and helps extend its reach through their networks, platforms, communities, and environmental initiatives. They inspire wider participation, strengthen public awareness and encourage meaningful action.","Ambassador",4,"network-ambassadors.jpg"),
+              ("advisors","Our Advisors","Our Advisors are distinguished subject-matter experts and experienced professionals who contribute knowledge, insight and strategic guidance across environmental and sustainability issues, strengthening our programmes, initiatives and outreach as needs and opportunities arise.","Advisor",4,"network-advisors.jpg"),
+              ("canopy-experts","Our Experts for the Canopy Project","Each has served at the highest level of their state's forest department, bringing decades of field experience and expertise to guide and strengthen our conservation and restoration initiatives.","Canopy Project expert",4,"network-experts.jpg"),
+              ("mfmv","MFMV",'My Future My Voice — Youth Ambassadors. <a href="programs.html#my-future-my-voice">Read about the initiative</a>.',"Youth Ambassador",4,"network-mfmv.jpg"),
+              ("artists","Artists","Visual artists, musicians and creators using culture to raise ecological awareness across India.","Artist",4,"network-artists.jpg"),
+              ("athletes","Athletes","Sports champions who lead low-carbon lifestyles and inspire youth fitness for a healthier planet.","Athlete",4,"network-athletes.jpg")]
     rows = []
-    for i,(aid,t,txt,role,n) in enumerate(groups):
+    for i,(aid,t,txt,role,n,img) in enumerate(groups):
         intro = f'<p>{txt}</p>' if txt else f'<p class="notice">Introduction text to be supplied by the client.</p>'
-        rows.append(f'<section class="network-row" id="{aid}" aria-labelledby="{aid}-h"><div class="nr-aside">{eyebrow(f"No. {i+1:02d}","left")}<h2 id="{aid}-h">{t}</h2>{intro}</div>{profiles(n, role)}</section>')
+        banner_img = f'<div class="network-group-media mb-0"><figure class="frame ratio-43"><div class="fi">{picture(img, f"{t} — Earth Day Network India", "(max-width:980px) 100vw, 400px")}</div></figure></div>'
+        rows.append(f'<section class="network-row" id="{aid}" aria-labelledby="{aid}-h"><div class="nr-aside">{eyebrow(f"No. {i+1:02d}","left")}<h2 id="{aid}-h">{t}</h2>{intro}{banner_img}</div>{profiles(n, role)}</section>')
     sn = [("Ambassadors","ambassadors"),("Advisors","advisors"),("Canopy Experts","canopy-experts"),("MFMV","mfmv"),("Artists","artists"),("Athletes","athletes"),("Partners","partners")]
-    body = f'''{page_hero("Network","Our Network","Ambassadors, advisors, experts, artists, athletes and partners who extend the Earth Day movement across India.","gallery-4.jpg",f"Mentors with school children — the {ORG} network","network.html")}
+    body = f'''{page_hero("Network", "Our National Network", "Meet the ambassadors, advisors and partners who lead vital environmental action across India today.", "gallery-4.jpg", f"Mentors with school children — the {ORG} network", "network.html")}
 {subnav(sn)}
+
+<!-- OVERVIEW SECTION -->
+<section class="section paper-white tight" id="intro"><div class="wrap editorial">
+ <div class="side"><span class="eyebrow left">Overview</span><h2>Voices of Leadership</h2></div>
+ <div><p class="lede strong">Ambassadors, advisors, experts, artists, athletes and partners who extend the Earth Day movement across India.</p>
+ <p>Through their networks, platforms, communities and environmental initiatives, our collaborators inspire wider participation, strengthen public awareness and encourage meaningful action for the living environment.</p>
+ </div>
+</div></section>
 
 <!-- STATS STRIP -->
 <section class="section navy tight" id="network-stats" aria-label="Network Figures"><div class="wrap">
@@ -59,15 +69,15 @@ def network():
          f"Meet the {ORG} network: ambassadors, advisors, Canopy Project experts, My Future My Voice youth ambassadors, artists, athletes and partners of Earth Day India.",
          "network.html", body, crumbs=[("Home","index.html"),("Network","network.html")])
 
-AW9 = [("Earth Day Heroes","Individuals and organisations demonstrating exceptional environmental commitment and community mobilisation."),
- ("Star Municipal Leaders Award","Municipal corporations and urban local bodies leading environmental sustainability, waste management, cleanups, plastic reduction, green initiatives and community engagement."),
- ("Star Women's Group Award","Women leaders, women-led groups and community initiatives creating meaningful environmental and climate action."),
- ("Earth Day Rising Stars","Children and teenagers actively engaged in environmental conservation, with opportunities to showcase their work and connect with useful networks."),
- ("Earth Day Stars","Individuals and organisations making outstanding contributions to environmental awareness, sustainability and action."),
- ("Village Awards","Villages and rural communities leading conservation, responsible resource use, waste management, renewable energy, biodiversity and community participation."),
- ("Clean Cooking Stars","Individuals, communities and initiatives advancing cleaner and healthier cooking, renewable energy and low-carbon lifestyles."),
- ("Litter Free India Champions","Innovative and sustained efforts to reduce litter, promote responsible waste management and create cleaner communities."),
- ("Star Campus Awards","Recognises educational campuses advancing renewable energy, rainwater harvesting, climate education, green audits, waste management, biodiversity and community engagement.")]
+AW9 = [("Earth Day Heroes","Individuals and organisations demonstrating exceptional environmental commitment and community mobilisation.","award-badge-heroes.jpg"),
+ ("Star Municipal Leaders Award","Municipal corporations and urban local bodies leading environmental sustainability, waste management, cleanups, plastic reduction, green initiatives and community engagement.","award-badge-muni.jpg"),
+ ("Star Women's Group Award","Women leaders, women-led groups and community initiatives creating meaningful environmental and climate action.","award-badge-women.jpg"),
+ ("Earth Day Rising Stars","Children and teenagers actively engaged in environmental conservation, with opportunities to showcase their work and connect with useful networks.","award-badge-rising.jpg"),
+ ("Earth Day Stars","Individuals and organisations making outstanding contributions to environmental awareness, sustainability and action.","award-badge-heroes.jpg"),
+ ("Village Awards","Villages and rural communities leading conservation, responsible resource use, waste management, renewable energy, biodiversity and community participation.","award-badge-panchayat.jpg"),
+ ("Clean Cooking Stars","Individuals, communities and initiatives advancing cleaner and healthier cooking, renewable energy and low-carbon lifestyles.","award-badge-cooking.jpg"),
+ ("Litter Free India Champions","Innovative and sustained efforts to reduce litter, promote responsible waste management and create cleaner communities.","award-badge-litter.jpg"),
+ ("Star Campus Awards","Recognises educational campuses advancing renewable energy, rainwater harvesting, climate education, green audits, waste management, biodiversity and community engagement.","award-badge-campus.jpg")]
 
 CATS = [
     ("OPOP Stars", "One Planet One People Stars honoring collective community environmental stewardship."),
@@ -88,13 +98,13 @@ CATS = [
 
 def awards():
     lst = "".join(f'''<li class="award-card reveal">
-  <div class="award-badge-icon">{MEDAL}</div>
+  <div class="award-badge-media">{picture(img, f"{t} badge icon", "(max-width:640px) 64px, 80px", img_cls="award-img")}</div>
   <div class="award-info">
     <h3>{t}</h3>
     <p>{dsc}</p>
     <a class="link-arrow" href="join-us.html#forms">Nominate / Enquire {ARROW}</a>
   </div>
-</li>''' for t,dsc in AW9)
+</li>''' for t,dsc,img in AW9)
 
     cats = "".join(f'''<li class="category-card reveal">
   <div class="category-header">
@@ -106,14 +116,20 @@ def awards():
   <a class="link-arrow" href="join-us.html#forms">Register interest {ARROW}</a>
 </li>''' for c, d in CATS)
 
-    groups = [("energy","Energy","Awards recognising renewable energy, energy literacy, and clean cooking transitions."),
-              ("institutional","Institutional","Awards for municipal corporations, universities, schools, and faith sites."),
-              ("group","Group","Awards for women's groups, village panchayats, and civic cleanup coalitions."),
-              ("geographical","Geographical","Awards recognising regional, district, and state-level environmental stewardship."),
-              ("individual","Individual","Awards honoring Earth Day Heroes, Rising Stars, and youth green innovators.")]
-    grp = "".join(f'<li id="{a}" class="group-box reveal"><span class="k">{i+1:02d}</span><h3>{t}</h3><p>{dsc}</p><a class="link-arrow" href="#all-awards">View categories {ARROW}</a></li>' for i,(a,t,dsc) in enumerate(groups))
+    groups = [("energy","Energy","Awards recognising renewable energy, energy literacy, and clean cooking transitions.","award-group-energy.jpg"),
+              ("institutional","Institutional","Awards for municipal corporations, universities, schools, and faith sites.","award-group-institutional.jpg"),
+              ("group","Group","Awards for women's groups, village panchayats, and civic cleanup coalitions.","award-group-group.jpg"),
+              ("geographical","Geographical","Awards recognising regional, district, and state-level environmental stewardship.","award-group-geographical.jpg"),
+              ("individual","Individual","Awards honoring Earth Day Heroes, Rising Stars, and youth green innovators.","award-group-individual.jpg")]
+    grp = "".join(f'''<li id="{a}" class="group-box reveal">
+  <div class="group-media mb-0"><figure class="frame ratio-43"><div class="fi">{picture(img, f"{t} Sector Awards Banner", "(max-width:640px) 100vw, 320px")}</div></figure></div>
+  <span class="k">{i+1:02d}</span>
+  <h3>{t}</h3>
+  <p>{dsc}</p>
+  <a class="link-arrow" href="#all-awards">View categories {ARROW}</a>
+</li>''' for i,(a,t,dsc,img) in enumerate(groups))
 
-    body = f'''{page_hero("Awards","Awards and Recognitions","We believe there is no time to lose.","gallery-6.jpg",f"Mango tree in flower — {ORG} awards and recognitions","awards.html")}
+    body = f'''{page_hero("Awards", "Awards And Recognitions", "We honour green leaders, schools and civic groups who champion environmental conservation across India.", "gallery-6.jpg", f"Mango tree in flower — {ORG} awards and recognitions", "awards.html")}
 {subnav([("Overview","overview"),("Our Awards","our-awards"),("Browse by type","browse"),("All award categories","all-awards")])}
 <section class="section paper-white" id="overview" aria-labelledby="ov-h"><div class="wrap editorial"><div class="side">{eyebrow("Overview","left")}<h2 id="ov-h">Why We Recognise</h2></div>
  <div><p class="dropcap">We believe there is no time to lose. Many effective environmental solutions are already delivering results and can be adapted and replicated without reinventing the wheel. Our awards identify, recognise and showcase these proven initiatives so that they can inspire wider action and accelerate meaningful change.</p>
@@ -128,22 +144,23 @@ def awards():
          "awards.html", body, crumbs=[("Home","index.html"),("Awards","awards.html")])
 
 def events():
-    up = [("22","Apr 2027","Earth Day 2027","upcoming","Upcoming",f'Commemorated every year on April 22. <a href="{GLOBAL_THEME_URL}" target="_blank" rel="noopener">Global theme: Food for Our Planet™<span class="sr-only"> (opens in a new tab)</span></a>.'),
-          ("TBC","Date","Cleanup Day","upcoming","Upcoming","Beach, lake and river cleanup drives across multiple states. Details to be announced."),
-          ("Ongoing","Active","Young Climate Champions (YCC)","ongoing","Ongoing","Part of the JSW–The Times of India Earth Care Awards, reaching college youth across India."),
-          ("2025","Archive","National Climate Assemblies","past","Past event","Student assemblies uniting educators and students across 1,00,000+ schools."),
-          ("2024","Archive","Ganga River Basin Cleanups","past","Past event","Community waste cleanups from Devprayag to Ganga Sagar."),
-          ("Press","Coverage","National Press & Television Features","news","In News","Coverage of Earth Day Network India initiatives, Energy Swaraj Yatra, and Morning Assembly broadcasts.")]
+    up = [("22","Apr 2027","Earth Day 2027","upcoming","Upcoming",f'Commemorated every year on April 22. <a href="{GLOBAL_THEME_URL}" target="_blank" rel="noopener">Global theme: Food for Our Planet™<span class="sr-only"> (opens in a new tab)</span></a>.',"event-earthday2027.jpg"),
+          ("TBC","Date","Cleanup Day","upcoming","Upcoming","Beach, lake and river cleanup drives across multiple states. Details to be announced.","event-cleanupday.jpg"),
+          ("Ongoing","Active","Young Climate Champions (YCC)","ongoing","Ongoing","Part of the JSW–The Times of India Earth Care Awards, reaching college youth across India.","event-ycc.jpg"),
+          ("2025","Archive","National Climate Assemblies","past","Past event","Student assemblies uniting educators and students across 1,00,000+ schools.","event-assemblies.jpg"),
+          ("2024","Archive","Ganga River Basin Cleanups","past","Past event","Community waste cleanups from Devprayag to Ganga Sagar.","event-ganga.jpg"),
+          ("Press","Coverage","National Press & Television Features","news","In News","Coverage of Earth Day Network India initiatives, Energy Swaraj Yatra, and Morning Assembly broadcasts.","event-media.jpg")]
 
     rows = "".join(f'''<li class="ev-row reveal" data-category="{cat}">
   <p class="ev-date mb-0"><span class="d">{dd}</span><span class="m">{m}</span></p>
+  <div class="ev-thumb-wrap">{picture(img, f"{t} event photo", "(max-width:640px) 60px, 80px", img_cls="ev-thumb")}</div>
   <div class="ev-info">
     <span class="status status-{cat}">{s}</span>
     <h3>{t}</h3>
     <p>{p} {tag() if "TBC" in dd else ""}</p>
   </div>
   <a class="btn outline" href="join-us.html#forms" data-track="CTA: Event interest">Register interest</a>
-</li>''' for dd,m,t,cat,s,p in up)
+</li>''' for dd,m,t,cat,s,p,img in up)
 
     past = [("Awards in Mumbai","gallery-5.jpg"),("Save the Beach","program-cleanup.jpg"),("Sundarbans","gallery-1.jpg")]
     pc = "".join(f'<li><a class="past-card reveal" href="#past-{i+1}" id="past-{i+1}"><figure class="frame ratio-43 archival archival-hover"><div class="fi">{picture(img, f"{t} — major past event placeholder photo", "(max-width:640px) 100vw, 33vw")}</div></figure><span class="status past">Past event</span><h3>{t}</h3><p>Event page link to be supplied.</p></a></li>' for i,(t,img) in enumerate(past))
@@ -153,7 +170,7 @@ def events():
               "location":{"@type":"Place","name":"India (TODO: venue to be confirmed)","address":{"@type":"PostalAddress","addressCountry":"IN"}},
               "organizer":{"@id":BASE_URL+"/#organization"},"url":BASE_URL+"/events.html#upcoming","image":BASE_URL+"/assets/og/og-default.jpg"}]
 
-    body = f'''{page_hero("Events","Events",f"Upcoming, ongoing and major past events of {ORG}.","show-panel-4.jpg","Ghats on the Ganga, Varanasi — Earth Day India events","events.html")}
+    body = f'''{page_hero("Events", "Events And Campaigns", "Join upcoming gatherings, green cleanups and tree plantings mobilising communities across all Indian states.", "show-panel-4.jpg", "Ghats on the Ganga, Varanasi — Earth Day India events", "events.html")}
 {subnav([("Filter Events","events-feed"),("Ongoing Spotlight","ongoing"),("Major Past Events","past"),("EDN in News","news")])}
 
 <section class="section paper-white" id="events-feed" aria-labelledby="feed-h"><div class="wrap">
@@ -183,28 +200,28 @@ def events():
          "events.html", body, crumbs=[("Home","index.html"),("Events","events.html")], extra_ld=ev_ld)
 
 def resources():
-    R = [("reports","Reports","doc","Programme and impact reports.","reports"),
-         ("brochure","Brochure","fold","Organisation brochure.","brochure"),
-         ("ppt","PPT","slides","Presentation decks.","educational"),
-         ("branding","Branding Usage with Guidelines","brand","Social media use, tags, logo usage, banner placements.","guides"),
-         ("ebooks","Ebooks","book","Downloadable ebooks for eco-literacy.","educational"),
-         ("videos","Videos","video","Video library on YouTube and multimedia.","media"),
-         ("courses","Courses - Energy Literacy","cap","Energy Literacy courses with Energy Swaraj Foundation.","educational"),
-         ("eco-games","Eco games","game","Interactive games for environmental learning.","educational"),
-         ("merch","Merch","bag","Sustainable merchandise.","guides"),
-         ("books","Link to our books","shelf","Our authored books and printed resources.","educational")]
+    R = [("reports","Reports","doc","Programme and impact reports.","reports","resource-reports.jpg"),
+         ("brochure","Brochure","fold","Organisation brochure.","brochure","resource-brochure.jpg"),
+         ("ppt","PPT","slides","Presentation decks.","educational","resource-ppt.jpg"),
+         ("branding","Branding Usage with Guidelines","brand","Social media use, tags, logo usage, banner placements.","guides","resource-branding.jpg"),
+         ("ebooks","Ebooks","book","Downloadable ebooks for eco-literacy.","educational","resource-ebooks.jpg"),
+         ("videos","Videos","video","Video library on YouTube and multimedia.","media","resource-videos.jpg"),
+         ("courses","Courses - Energy Literacy","cap","Energy Literacy courses with Energy Swaraj Foundation.","educational","resource-courses.jpg"),
+         ("eco-games","Eco games","game","Interactive games for environmental learning.","educational","resource-games.jpg"),
+         ("merch","Merch","bag","Sustainable merchandise.","guides","resource-merch.jpg"),
+         ("books","Link to our books","shelf","Our authored books and printed resources.","educational","resource-books.jpg")]
 
     rows = "".join(f'''<li id="{a}" class="res-item reveal" data-filter-group="{cat}">
   <span class="rn">{i+1:02d}</span>
-  <span class="ic">{icon(ic)}</span>
+  <div class="res-thumb-wrap">{picture(img, f"{t} cover thumbnail", "(max-width:640px) 48px, 64px", img_cls="res-thumb")}</div>
   <div class="res-body">
     <h3>{t}</h3>
     <p>{dsc} Files and links to be supplied.</p>
   </div>
   <span class="res-badge soon">Coming soon</span>
-</li>''' for i,(a,t,ic,dsc,cat) in enumerate(R))
+</li>''' for i,(a,t,ic,dsc,cat,img) in enumerate(R))
 
-    body = f'''{page_hero("Resources","Resources","Reports, brochures, branding guidelines, ebooks, videos, courses and more for environmental and climate education in India.","gallery-3.jpg",f"Handloom weaver — {ORG} resources","resources.html")}
+    body = f'''{page_hero("Resources", "Educational Resources", "Access free guides, reports and toolkits to foster environmental learning and citizen action across India.", "gallery-3.jpg", f"Handloom weaver — {ORG} resources", "resources.html")}
 <section class="section paper-white" aria-labelledby="lib-h"><div class="wrap editorial">
  <div class="side">
   {eyebrow("Library","left")}
@@ -292,13 +309,13 @@ def join():
 </div>''')
     faq_html = "".join(faq_items)
 
-    body = f'''{page_hero("Join Us","Join Us","Every act counts. Collective action multiplies its impact.","show-panel-2.jpg",f"Rice fields in Kerala — join {ORG}, environmental nonprofit India","join-us.html")}
+    body = f'''{page_hero("Join Us", "Join Our Movement", "Partner with us, volunteer your time or launch local green initiatives for a healthier, greener India.", "show-panel-2.jpg", f"Rice fields in Kerala — join {ORG}, environmental nonprofit India", "join-us.html")}
 {subnav([("Ways to Join","ways-to-join"),("CSR Focus","csr"),("Partner","partner"),("Call to Action","cta"),("Volunteer","volunteer"),("Project Interest Forms","forms"),("FAQ","join-faq")])}
 <section class="section paper-white tight" id="ways-to-join" aria-labelledby="ways-h"><div class="wrap"><h2 id="ways-h" class="sr-only">Ways to join</h2><ul class="join-paths">
- <li><a href="#csr"><span class="k">01</span><h3>CSR Focus</h3><p>For businesses and CSR teams.</p><span class="link-arrow">Read more {ARROW}</span></a></li>
- <li><a href="#partner"><span class="k">02</span><h3>Partner</h3><p>Partner With Us.</p><span class="link-arrow">Read more {ARROW}</span></a></li>
- <li><a href="#volunteer"><span class="k">03</span><h3>Volunteer</h3><p>Volunteer form.</p><span class="link-arrow">Go to form {ARROW}</span></a></li>
- <li><a href="#forms"><span class="k">04</span><h3>Project Interest Forms</h3><p>Other forms (e.g., Plantation).</p><span class="link-arrow">Go to form {ARROW}</span></a></li>
+ <li><a href="#csr"><div class="join-path-thumb mb-0">{picture("join-path-csr.jpg", "CSR Focus Partnership", "(max-width:640px) 100vw, 260px")}</div><span class="k">01</span><h3>CSR Focus</h3><p>For businesses and CSR teams.</p><span class="link-arrow">Read more {ARROW}</span></a></li>
+ <li><a href="#partner"><div class="join-path-thumb mb-0">{picture("join-path-partner.jpg", "Institutional Partners", "(max-width:640px) 100vw, 260px")}</div><span class="k">02</span><h3>Partner</h3><p>Partner With Us.</p><span class="link-arrow">Read more {ARROW}</span></a></li>
+ <li><a href="#volunteer"><div class="join-path-thumb mb-0">{picture("join-path-volunteer.jpg", "Community Volunteer", "(max-width:640px) 100vw, 260px")}</div><span class="k">03</span><h3>Volunteer</h3><p>Volunteer form.</p><span class="link-arrow">Go to form {ARROW}</span></a></li>
+ <li><a href="#forms"><div class="join-path-thumb mb-0">{picture("join-path-forms.jpg", "Project Interest Forms", "(max-width:640px) 100vw, 260px")}</div><span class="k">04</span><h3>Project Interest Forms</h3><p>Other forms (e.g., Plantation).</p><span class="link-arrow">Go to form {ARROW}</span></a></li>
 </ul></div></section>
 <section class="section paper" id="csr" aria-labelledby="csr-h"><div class="wrap editorial"><div class="side">{eyebrow("No. 01","left")}<h2 id="csr-h">CSR Focus</h2></div>
  <div><p class="lede strong">We also believe that sustainability and profitability can go hand in hand, and we work with businesses to identify practical pathways to go green, reduce environmental impact, create value and build long-term sustainable growth.</p>
@@ -311,7 +328,7 @@ def join():
  <h3 class="mt-l">Among the organisations we have worked with</h3><ul class="partner-names">{names}</ul></div></div></section>
 <section class="section navy" id="cta" aria-labelledby="cta-h"><div class="wrap center narrow">
  {eyebrow("Call to Action")}<h2 id="cta-h">Every act counts. Collective action multiplies its impact.</h2>
- <figure class="mb-0"><blockquote class="pull">We need all hands on deck—and many more green actions—to build a healthier, more sustainable world that benefits everyone, today and for generations to come.</blockquote></figure>
+ <figure class="mb-0"><blockquote class="pull">We need all hands on deck&mdash;and many more green actions&mdash;to build a healthier, more sustainable world that benefits everyone, today and for generations to come.</blockquote></figure>
  <p class="lede mt-l">Whether you are an individual, educational institution, community organisation, business or funder, you can help advance practical environmental action across India. Join a programme, share your expertise, support an initiative or partner with us to take proven solutions further.</p>
  <div class="btns btns-center"><a class="btn" href="#forms" data-track="CTA: Partner With Us (Join)">Partner With Us {ARROW}</a><a class="btn ghost" href="#volunteer" data-track="CTA: Volunteer">Volunteer</a></div>
 </div></section>

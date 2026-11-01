@@ -196,11 +196,88 @@ async function runVerification() {
 
   // Test Globe Filter Buttons
   const filterPass = await testPage.evaluate(() => {
-    const btn = document.querySelector('.globe-filter-btn[data-filter="forests"]');
+    const btn = document.querySelector('.globe-legend-btn[data-filter="forests"], .globe-filter-btn[data-filter="forests"]');
     if (btn) { btn.click(); return btn.classList.contains('active'); }
     return false;
   });
   console.log(`  Globe filter click 'forests': ${filterPass}`);
+
+  // Test Globe Place Item Selection & Bottom-sheet
+  const sheetOpenPass = await testPage.evaluate(() => {
+    const placeBtn = document.querySelector('.globe-place-item');
+    if (placeBtn) {
+      placeBtn.click();
+      const sheet = document.getElementById('globe-sheet');
+      return sheet && !sheet.hidden;
+    }
+    return false;
+  });
+  console.log(`  Globe place click opens sheet: ${sheetOpenPass}`);
+
+  // Test Quotes / Testimonial Slider
+  console.log('  Testing Quotes & Testimonials Slider...');
+  const testSliderPass = await testPage.evaluate(() => {
+    const qSec = document.getElementById('quotes');
+    if (!qSec) return false;
+    const nextBtn = qSec.querySelector('.t-next');
+    if (nextBtn) nextBtn.click();
+    const activeSlide = qSec.querySelector('.t-slide.is-active');
+    return !!activeSlide;
+  });
+  console.log(`  Testimonials slider next navigation: ${testSliderPass}`);
+
+  // Test Mobile Menu Overlap (Bounding Box Check) at 390px
+  console.log('\n--- Testing Mobile Menu Overlap (Bounding Box Check) ---');
+  const mobCheckCtx = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const mobCheckPage = await mobCheckCtx.newPage();
+  await mobCheckPage.goto(`${BASE_URL}/index.html`, { waitUntil: 'networkidle' });
+
+  const menuOverlapResults = await mobCheckPage.evaluate(() => {
+    const toggle = document.querySelector('.menu-toggle');
+    if (!toggle) return { opened: false, overlaps: [] };
+    toggle.click(); // open menu
+
+    // Open first dropdown accordion to test expanded submenus
+    const firstDdBtn = document.querySelector('.nav .dd-btn');
+    if (firstDdBtn) firstDdBtn.click();
+
+    // Check all visible nav links for bounding-box intersection
+    const links = Array.from(document.querySelectorAll('.nav a, .nav .dd-btn')).filter(el => {
+      const rect = el.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0 && window.getComputedStyle(el).display !== 'none';
+    });
+
+    const overlaps = [];
+    for (let i = 0; i < links.length; i++) {
+      for (let j = i + 1; j < links.length; j++) {
+        const r1 = links[i].getBoundingClientRect();
+        const r2 = links[j].getBoundingClientRect();
+        // Check if rectangles intersect with more than 2px tolerance
+        const intersects = !(r2.left >= r1.right - 2 || 
+                             r2.right <= r1.left + 2 || 
+                             r2.top >= r1.bottom - 2 || 
+                             r2.bottom <= r1.top + 2);
+        if (intersects) {
+          overlaps.push({
+            el1: links[i].textContent.trim().slice(0, 30),
+            el2: links[j].textContent.trim().slice(0, 30),
+            r1: { top: r1.top, bottom: r1.bottom },
+            r2: { top: r2.top, bottom: r2.bottom }
+          });
+        }
+      }
+    }
+    return { opened: document.body.classList.contains('menu-open'), overlaps, totalLinksChecked: links.length };
+  });
+
+  console.log(`  Mobile Menu opened: ${menuOverlapResults.opened}, Links checked: ${menuOverlapResults.totalLinksChecked}`);
+  if (menuOverlapResults.overlaps.length === 0) {
+    console.log(`  [PASS] 0 bounding-box overlaps in mobile menu!`);
+  } else {
+    console.error(`  [FAIL] Detected ${menuOverlapResults.overlaps.length} overlapping links in mobile menu:`, menuOverlapResults.overlaps);
+    report.interactiveChecks.push({ check: 'Mobile menu overlap', failed: true, overlaps: menuOverlapResults.overlaps });
+  }
+  await mobCheckCtx.close();
 
   // C. Featured Projects Slider
   console.log('  Testing Featured Projects Slider...');

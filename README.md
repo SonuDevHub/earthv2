@@ -33,8 +33,9 @@ python _src/build.py
 | `_src/common.py` | **Config constants**, header/nav/footer, forms, JSON-LD |
 | `_src/home.py`, `about.py`, `programs.py`, `inner.py`, `legal.py` | Page content (copy taken verbatim from the client brief) |
 | `_src/style.css`, `_src/main.js` | Source CSS/JS. The build minifies them to `assets/css/style.<hash>.min.css` and `assets/js/main.<hash>.min.js` |
-| `_src/img/*.jpg` | Original photos. The build creates AVIF, WebP and JPG versions at 480, 800, 1200 and 1800 px |
-| `_src/credits.json` | Image credits (feeds `credits.html`) |
+| `_src/img/*.jpg` | Original photos and badges. The build creates AVIF, WebP and JPG versions in `assets/img/<group>/` |
+| `_src/data/credits.json` | Image credits (feeds `credits.html` and `docs/IMAGE_CREDITS.md`) |
+| `_src/data/markers.json` | 3D Interactive Earth Globe & OSM map marker datasets |
 
 ### Config constants (`_src/common.py`)
 | Constant | Current value | Action |
@@ -48,7 +49,7 @@ python _src/build.py
 
 ## Placeholders still needed from the client
 Every placeholder is visibly labelled on the site, so nothing passes as real content.
-1. **Photos:** the Google Drive photos replace the Wikimedia images. Use the same filenames (e.g. `home-page-picture-1.jpg` … `-4`, `show-panel-1…5`, `program-*.jpg`, `gallery-1…6`, `theme-2027.jpg`). See `IMAGE_CREDITS.md`.
+1. **Photos:** the Google Drive photos replace the placeholder images. Use the same filenames (e.g. `home-page-picture-1.jpg` … `-4`, `show-panel-1…5`, `program-*.jpg`, `gallery-1…6`, `theme-2027.jpg`, badges and cards). See `docs/IMAGE_CREDITS.md`.
 2. **Official logo** (navy + white versions) and the **Earth Day 2027 theme logo** for the footer slot.
 3. **10–12 awardee headshots**, plus names for the home "400+ awardees" block.
 4. **Combined partner-logo image** (home, Programs, Join Us).

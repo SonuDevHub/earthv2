@@ -1,11 +1,8 @@
 import json, os
 from common import *
 
-def simple_hero(crumb, h1, lede, file):
-    return f'''<section class="page-hero"><div class="wrap"><nav class="crumbs" aria-label="Breadcrumb"><ol><li><a href="index.html">Home</a></li><li><a href="{file}" aria-current="page">{crumb}</a></li></ol></nav><h1>{h1}</h1><p class="lede">{lede}</p></div></section>'''
-
 def privacy():
-    body = simple_hero("Privacy policy","Privacy Policy","How this website handles information.","privacy-policy.html") + f'''
+    body = page_hero("Privacy policy", "Privacy Policy", "Read how our organisation protects your personal information and respects your rights across this website.", "programs-main.jpg", "Privacy policy - Earth Day Network India", "privacy-policy.html") + f'''
 <section class="section paper-white"><div class="wrap prose">
 <p class="draft-banner">DRAFT — requires legal review before publication. Last updated: [date to be set at launch].</p>
 <p>This policy explains what information the {ORG} website collects and why. It describes only what the site actually does.</p>
@@ -27,7 +24,7 @@ def privacy():
     page("privacy-policy.html", f"Privacy Policy | {ORG}", f"How the {ORG} website handles form submissions, cookieless analytics, click-to-load embeds and map tiles.", "", body, crumbs=[("Home","index.html"),("Privacy policy","privacy-policy.html")], priority="0.3")
 
 def terms():
-    body = simple_hero("Terms of use","Terms of Use","Simple terms for using this website.","terms.html") + f'''
+    body = page_hero("Terms of use", "Terms Of Use", "Review the official conditions governing your access and use of our public educational website in India.", "gallery-2.jpg", "Terms of use - Earth Day Network India", "terms.html") + f'''
 <section class="section paper-white"><div class="wrap prose">
 <p class="draft-banner">DRAFT — requires legal review before publication.</p>
 <h2>Use of this site</h2><p>This website provides information about {ORG} and its programmes. You may browse and share pages for non-commercial purposes.</p>
@@ -40,14 +37,16 @@ def terms():
     page("terms.html", f"Terms of Use | {ORG}", f"Terms for using the {ORG} website, its content and its forms.", "", body, crumbs=[("Home","index.html"),("Terms of use","terms.html")], priority="0.3")
 
 def credits():
-    rows = json.load(open(os.path.join(SRC, "credits.json")))
-    items = "".join(f'<li><strong>{e(r[0])}</strong> — “{e(r[1])}” by {e(r[3])}, <a href="{e(r[2])}" target="_blank" rel="noopener">Wikimedia Commons<span class="sr-only"> (opens in a new tab)</span></a>, licence: {e(r[4])}{(" (" + "<a href=\"" + e(r[5]) + "\" target=\"_blank\" rel=\"noopener\">licence text<span class=\"sr-only\"> (opens in a new tab)</span></a>)") if r[5] else ""}. Resized and colour-treated. <em>Placeholder — to be replaced by client photos.</em></li>' for r in rows)
-    body = simple_hero("Photo credits","Photo Credits","Placeholder photography used on this site, with sources and licences.","credits.html") + f'''
-<section class="section paper-white"><div class="wrap prose"><p>All photographs below are placeholders from Wikimedia Commons, used under the licences shown, until the client's own photos are supplied. Logos: EARTHDAY.ORG Brand Library (placeholder mark).</p><ul>{items}</ul></div></section>'''
+    data_path = os.path.join(SRC, "data", "credits.json")
+    if not os.path.exists(data_path): data_path = os.path.join(SRC, "credits.json")
+    rows = json.load(open(data_path, encoding="utf-8"))
+    items = "".join(f'<li><strong>{e(r[0])}</strong> — “{e(r[1])}” by {e(r[3])}, <a href="{e(r[2])}" target="_blank" rel="noopener">Source<span class="sr-only"> (opens in a new tab)</span></a>, licence: {e(r[4])}{(" (" + "<a href=\"" + e(r[5]) + "\" target=\"_blank\" rel=\"noopener\">licence text<span class=\"sr-only\"> (opens in a new tab)</span></a>)") if r[5] else ""}. Resized and colour-treated. <em>Placeholder — to be replaced by client photos.</em></li>' for r in rows)
+    body = page_hero("Photo credits", "Photo Credits", "We acknowledge the photographers and open archives whose public images help illustrate this Indian website.", "gallery-5.jpg", "Photo credits - Earth Day Network India", "credits.html") + f'''
+<section class="section paper-white"><div class="wrap prose"><p>All photographs below are placeholders used under their stated licences until the client's own photos are supplied. Logos: EARTHDAY.ORG Brand Library.</p><ul>{items}</ul></div></section>'''
     page("credits.html", f"Photo Credits | {ORG}", f"Sources and licences of the placeholder photographs used on the {ORG} website.", "", body, crumbs=[("Home","index.html"),("Photo credits","credits.html")], priority="0.2")
 
 def thank_you():
-    body = simple_hero("Thank you","Thank You","Your message has been received.","thank-you.html") + f'''
+    body = page_hero("Thank you", "Thank You", "We have received your submission and appreciate your valued support for environmental stewardship in India.", "gallery-4.jpg", "Thank you - Earth Day Network India", "thank-you.html") + f'''
 <section class="section paper-white"><div class="wrap narrow"><p class="lede">Thank you for writing to {ORG}. We will get back to you soon.</p><div class="btns"><a class="btn" href="index.html">Back to home {ARROW}</a><a class="btn outline" href="programs.html">Explore our programmes</a></div></div></section>'''
     page("thank-you.html", f"Thank You | {ORG}", f"Thank you for contacting {ORG}.", "", body, noindex=True)
 

@@ -122,7 +122,28 @@ def build():
     initial_label = "Highlight Video" if HERO_VIDEO else SLIDES[0][1]
 
     impact_items = "".join(f'<li class="impact reveal"><p class="n mb-0" data-count="{c}" data-dec="{d}" data-prefix="{p}" data-suffix="{s}" data-final="{disp}"><span class="sr-only">{disp}</span><span aria-hidden="true">{disp}</span></p><p class="t">{t}</p><p class="c">{cap}</p></li>' for c,d,p,s,disp,t,cap in IMPACT)
-    heads = "".join(f'<li class="headshot"><div class="ph">{SILHOUETTE}</div><span>Awardee {i+1:02d}</span></li>' for i in range(12))
+    # Awardee headshot monogram tiles
+    head_monograms = [
+        ("HR", "Earth Day Hero", "Heroes"),
+        ("ML", "Municipal Leader", "Urban"),
+        ("WG", "Women's Group", "Women"),
+        ("RS", "Rising Star", "Youth"),
+        ("ES", "Earth Star", "Civic"),
+        ("VG", "Village Award", "Rural"),
+        ("CS", "Clean Cooking", "Energy"),
+        ("LF", "Litter Free", "Cleanups"),
+        ("SC", "Star Campus", "Campus"),
+        ("YE", "Earthpreneur", "Green Biz"),
+        ("PC", "Panchayat Star", "Local Gov"),
+        ("SR", "Special Honor", "Security")
+    ]
+    heads = "".join(f'''<li class="headshot">
+  <div class="ph monogram-avatar" title="{title} — {cat}">
+    <span class="mono-initials">{mono}</span>
+  </div>
+  <span>{title}</span>
+</li>''' for mono, title, cat in head_monograms)
+
     strip_alts = ["Dense mangrove forest of the Sundarban Tiger Reserve, West Bengal","Rice fields in Kerala — sustainable agriculture India","Dal Lake, Srinagar — lake cleanups in India","Ganga Mahal Ghat, Varanasi — Ganga cleanup India","Solar power at Dhanas Lake, Chandigarh — clean energy India"]
     strip = "".join(f'<li class="{"archival archival-hover" if i in (1,3) else ""}">{picture(f"show-panel-{i+1}.jpg", a, "(max-width:640px) 20vw, 20vw")}</li>' for i,a in enumerate(strip_alts))
     cards = "".join(f'<li><a class="p-card" href="programs.html#{anc}" data-track="Programme card">{picture(src, "", "(max-width:640px) 82vw, (max-width:980px) 50vw, 300px")}<span class="shade"></span><span class="fr"></span><div class="body"><span class="pn">No. {i+1:02d} · Placeholder</span><h3>{t}</h3><p>{txt}</p><span class="link-arrow">Read more {ARROW}</span></div></a></li>' for i,(src,t,anc,txt) in enumerate(PCARDS))
@@ -131,7 +152,7 @@ def build():
     init_rows = []
     for num, title, anc, img, desc in INITIATIVES:
         img_base = os.path.splitext(img)[0]
-        preview_src = f"assets/img/{img_base}-800.jpg"
+        preview_src = f"assets/img/programs/{img_base}-800.jpg"
         init_rows.append(f'''<a class="init-row reveal" href="programs.html#{anc}" data-preview="{preview_src}" data-track="Initiative: {title}">
   <span class="init-num">{num}</span>
   <div class="init-body">
@@ -141,6 +162,57 @@ def build():
   <span class="init-arrow">{ARROW}</span>
 </a>''')
     initiatives_html = "".join(init_rows)
+
+    # Globe places list
+    markers_path = os.path.join(SRC, "data", "markers.json")
+    if not os.path.exists(markers_path): markers_path = os.path.join(ROOT, "assets", "earth", "markers.json")
+    markers_data = json.load(open(markers_path, encoding="utf-8")) if os.path.exists(markers_path) else []
+    
+    place_buttons = []
+    for m in markers_data:
+        place_buttons.append(f'''<button class="globe-place-item" type="button" data-id="{m['id']}" data-cat="{m['category']}" data-lat="{m['lat']}" data-lng="{m['lng']}" data-name="{e(m['name'])}" data-place="{e(m['place'])}" data-prog="{e(m['program'])}" data-desc="{e(m['description'])}" data-stats="{e(m.get('stats',''))}" data-anchor="{m.get('anchor','programs.html')}">
+  <span class="place-dot" aria-hidden="true"></span>
+  <span class="place-text">
+    <strong class="place-name">{e(m['name'])}</strong>
+    <small class="place-loc">{e(m['place'])}</small>
+  </span>
+  <span class="place-tag">{e(m['category'])}</span>
+</button>''')
+    places_list_html = "".join(place_buttons)
+
+    # Testimonials Slider items (Content strictly from brief)
+    brief_quotes = [
+        ("Earth Day is celebrated once a year, but our responsibility to the Earth is every day.",
+         "The Trustees", "Earth Day Network India", "TR", "about.html#trustees"),
+        ("Every act counts. Collective action multiplies its impact.",
+         "Earth Day Network India", "National Citizen Movement", "EDN", "join-us.html"),
+        ("We need all hands on deck—and many more green actions—to build a healthier, more sustainable world that benefits everyone.",
+         "Leadership Message", "Earth Day Network India", "LM", "about.html"),
+        ("Additional partner testimonial and quotes to be supplied upon official client launch.",
+         "Partner Organisation", "Institutional Network (TODO)", "TODO", "join-us.html#partner")
+    ]
+    t_slides = []
+    t_dots = []
+    for i, (q, author, org_role, mono, link) in enumerate(brief_quotes):
+        act_cls = " is-active" if i == 0 else ""
+        cur_attr = ' aria-current="true"' if i == 0 else ' aria-current="false"'
+        t_slides.append(f'''<div class="t-slide{act_cls}" data-index="{i}" role="group" aria-roledescription="slide" aria-label="Quote {i+1} of {len(brief_quotes)}">
+  <div class="t-slide-content">
+    <blockquote class="pull mb-0">“{q}”</blockquote>
+    <div class="t-author-block">
+      <div class="t-avatar" aria-hidden="true">{mono}</div>
+      <div class="t-meta">
+        <cite class="t-author">{author}</cite>
+        <span class="t-role">{org_role}</span>
+        <a class="link-arrow mt-s" href="{link}">Learn more {ARROW}</a>
+      </div>
+    </div>
+  </div>
+</div>''')
+        t_dots.append(f'<button class="t-dot" type="button" data-index="{i}" aria-label="Go to testimonial {i+1}"{cur_attr}></button>')
+    
+    t_slides_html = "".join(t_slides)
+    t_dots_html = "".join(t_dots)
 
     # Featured projects slides
     feat_slides = []
@@ -215,36 +287,51 @@ def build():
  <div class="section-head split">
   <div>
    {eyebrow("Our Global Movement", "left")}
-   <h2 id="globe-h">One movement. Across India and the world.</h2>
+   <h2 id="globe-h">One Movement. Across India and the World.</h2>
   </div>
-  <p class="lede mb-0">EARTHDAY.ORG works with over 130 partner organisations across India and engages citizens in 192 countries. Rotate the interactive globe to explore our programme locations, tree plantings, river cleanups, and renewable energy hubs.</p>
+  <p class="lede mb-0">EARTHDAY.ORG works with over 130 partner organisations across India and engages citizens in 192 countries. Filter by programme or select a location from the legend to explore our on-the-ground action.</p>
  </div>
 
- <!-- Filter Chips -->
- <div class="globe-filters" role="group" aria-label="Filter programme locations on the globe">
-  <button class="globe-filter-btn active" type="button" data-filter="all">All</button>
-  <button class="globe-filter-btn" type="button" data-filter="forests">Forests</button>
-  <button class="globe-filter-btn" type="button" data-filter="cleanups">Cleanups</button>
-  <button class="globe-filter-btn" type="button" data-filter="education">Education</button>
-  <button class="globe-filter-btn" type="button" data-filter="agriculture">Agriculture</button>
-  <button class="globe-filter-btn" type="button" data-filter="energy">Energy</button>
+ <!-- Map Legend Programme Groups -->
+ <div class="globe-legend-bar" role="group" aria-label="Filter programme locations on the globe">
+  <button class="globe-legend-btn active" type="button" data-filter="all">All Programmes</button>
+  <button class="globe-legend-btn" type="button" data-filter="forests">Forests &amp; Canopy</button>
+  <button class="globe-legend-btn" type="button" data-filter="cleanups">Cleanups</button>
+  <button class="globe-legend-btn" type="button" data-filter="education">Education</button>
+  <button class="globe-legend-btn" type="button" data-filter="agriculture">Agriculture</button>
+  <button class="globe-legend-btn" type="button" data-filter="energy">Energy</button>
+  <button class="globe-legend-btn" type="button" data-filter="youth">Youth</button>
  </div>
 
- <!-- 3D Globe Canvas Container -->
- <div class="earth-canvas-wrapper" id="earth-canvas-container" aria-label="Interactive 3D Earth Globe showing Earth Day Network India project locations">
-  <noscript>
-   <div class="earth-fallback" style="background-image: url('assets/earth/earth-day.jpg');">
-    <div class="earth-fallback-overlay">
-     <h3>Our Worldwide Movement</h3>
-     <p>Mobilizing 1 billion people annually across 192 countries.</p>
-     <a href="network.html" class="btn">Explore Network {ARROW}</a>
+ <!-- 3D Globe Stage Grid (Globe + Places Directory) -->
+ <div class="globe-stage-grid">
+  <!-- 3D Globe Canvas Container -->
+  <div class="earth-canvas-wrapper" id="earth-canvas-container" aria-label="Interactive 3D Earth Globe showing Earth Day Network India project locations">
+   <noscript>
+    <div class="earth-fallback" style="background-image: url('assets/earth/earth-day.jpg');">
+     <div class="earth-fallback-overlay">
+      <h3>Our Worldwide Movement</h3>
+      <p>Mobilizing 1 billion people annually across 192 countries.</p>
+      <a href="network.html" class="btn">Explore Network {ARROW}</a>
+     </div>
     </div>
+   </noscript>
+   <!-- Bottom-sheet info card for clicked markers -->
+   <div class="globe-sheet" id="globe-sheet" hidden aria-live="polite">
+    <button class="sheet-close" id="globe-sheet-close" type="button" aria-label="Close location card">&times;</button>
+    <div class="sheet-content" id="globe-sheet-content"></div>
    </div>
-  </noscript>
-  <!-- Bottom-sheet info card for clicked markers -->
-  <div class="globe-sheet" id="globe-sheet" hidden aria-live="polite">
-   <button class="sheet-close" id="globe-sheet-close" type="button" aria-label="Close location card">&times;</button>
-   <div class="sheet-content" id="globe-sheet-content"></div>
+  </div>
+
+  <!-- Interactive Places List Directory -->
+  <div class="globe-places-dir" aria-label="Programme Locations Directory">
+   <div class="globe-places-header">
+    <h4>Programme Locations</h4>
+    <span class="globe-places-count" id="globe-places-count">{len(markers_data)} locations</span>
+   </div>
+   <div class="globe-places-scroll" id="globe-places-list" role="list">
+    {places_list_html}
+   </div>
   </div>
  </div>
 
@@ -461,13 +548,28 @@ def build():
  <div><div class="half-title"><h2>News</h2><a class="link-arrow" href="events.html#news">EDN in News {ARROW}</a></div><ul class="news-list">{news}</ul></div>
 </div></section>
 
-<!-- SECTION 17: QUOTES & TESTIMONIALS (Dark - Navy) -->
-<section class="section navy" id="quotes" aria-labelledby="q-h"><div class="wrap">
- <div class="center">{eyebrow("Quotes &amp; Testimonials")}<h2 id="q-h" class="sr-only">Quotes and testimonials</h2></div>
- <figure class="mb-0"><blockquote class="pull reveal">Earth Day is celebrated once a year, but our responsibility to the Earth is every day.</blockquote>
- <figcaption class="attrib">— The Trustees, {ORG} · <a href="about.html#trustees">Read the note</a></figcaption></figure>
- <ul class="testimonials">{tests}</ul>
-</div></section>
+<!-- SECTION 17: QUOTES & TESTIMONIALS SLIDER (Dark - Navy) -->
+<section class="section navy" id="quotes" aria-labelledby="q-h" aria-roledescription="carousel" aria-label="Quotes and Testimonials">
+ <div class="wrap">
+  <div class="section-head center">
+   {eyebrow("Quotes &amp; Testimonials")}
+   <h2 id="q-h">Voices of Responsibility</h2>
+   <p class="lede">Reflections and commitments from our trustees, leadership, and nationwide movement.</p>
+  </div>
+  <div class="t-slider-wrap">
+   <div class="t-slider-track" id="t-slider-track">
+    {t_slides_html}
+   </div>
+   <div class="t-slider-controls">
+    <button class="t-nav-btn t-prev" type="button" aria-label="Previous quote">{icon("arrow-l")}</button>
+    <div class="t-dots" role="tablist" aria-label="Quote slide controls">
+     {t_dots_html}
+    </div>
+    <button class="t-nav-btn t-next" type="button" aria-label="Next quote">{icon("arrow-r")}</button>
+   </div>
+  </div>
+ </div>
+</section>
 '''
     page("index.html", f"{ORG} | Environmental NGO in India — Earth Day Every Day",
          f"{ORG} is a registered trust and environmental NGO in India inspired by EARTHDAY.ORG — climate education, sustainable agriculture, clean energy, tree planting and cleanups.",
