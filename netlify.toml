@@ -1,0 +1,106 @@
+# Netlify configuration — Earth Day Network India
+# Static site: no build step on Netlify (assets are pre-built by `python3 _src/build.py` and committed).
+[build]
+  publish = "."
+  command = ""
+
+# Security + caching headers live in the _headers file (single source of truth).
+
+# Redirects — equivalent to the _redirects file
+
+[[redirects]]
+  from = "/about-us"
+  to = "/about.html"
+  status = 301
+
+[[redirects]]
+  from = "/programmes"
+  to = "/programs.html"
+  status = 301
+
+[[redirects]]
+  from = "/program"
+  to = "/programs.html"
+  status = 301
+
+[[redirects]]
+  from = "/our-network"
+  to = "/network.html"
+  status = 301
+
+[[redirects]]
+  from = "/awards-and-recognitions"
+  to = "/awards.html"
+  status = 301
+
+[[redirects]]
+  from = "/news"
+  to = "/events.html#news"
+  status = 301
+
+[[redirects]]
+  from = "/get-involved"
+  to = "/join-us.html"
+  status = 301
+
+[[redirects]]
+  from = "/join"
+  to = "/join-us.html"
+  status = 301
+
+[[redirects]]
+  from = "/volunteer"
+  to = "/join-us.html#volunteer"
+  status = 301
+
+[[redirects]]
+  from = "/contact"
+  to = "/#contact"
+  status = 301
+
+[[redirects]]
+  from = "/privacy"
+  to = "/privacy-policy.html"
+  status = 301
+
+[[redirects]]
+  from = "/_src/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/qa/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/screenshots/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/.git/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/README.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/QA_REPORT.md"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/IMAGE_CREDITS.md"
+  to = "/credits.html"
+  status = 301
+  force = true

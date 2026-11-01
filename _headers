@@ -1,0 +1,40 @@
+# Netlify headers — Earth Day Network India
+# HTTPS: Netlify provisions Let's Encrypt certificates and redirects HTTP→HTTPS automatically once "Force HTTPS" is on (see LAUNCH_CHECKLIST).
+# CSP allows only what the site uses: self-hosted assets, OpenStreetMap tiles, click-to-load YouTube (nocookie) / Instagram embeds.
+# ANALYTICS (not enabled yet): when you enable Umami or Plausible, add its host to script-src and connect-src,
+#   e.g. script-src 'self' https://cloud.umami.is; connect-src 'self' https://api-gateway.umami.dev   (or https://plausible.io for both)
+# reCAPTCHA (optional): add https://www.google.com https://www.gstatic.com to script-src and frame-src.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org; font-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com https://www.instagram.com; media-src 'self'; worker-src 'self' blob:; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), fullscreen=(self "https://www.youtube-nocookie.com")
+  Cross-Origin-Opener-Policy: same-origin
+
+# Long-lived, immutable: content-hashed CSS/JS and fonts (file names change whenever content changes)
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/vendor/*
+  Cache-Control: public, max-age=2592000
+# Images are not content-hashed (client may swap photos under the same names): 7 days
+/assets/img/*
+  Cache-Control: public, max-age=604800
+/assets/logos/*
+  Cache-Control: public, max-age=604800
+# HTML: short cache, always revalidate (Netlify's default for HTML is the same; stated explicitly for the home page and pages)
+/
+  Cache-Control: public, max-age=0, must-revalidate
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/thank-you
+  X-Robots-Tag: noindex
+/thank-you.html
+  X-Robots-Tag: noindex

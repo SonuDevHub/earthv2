@@ -1,0 +1,7 @@
+# TODO: confirm BASE_URL (https://www.earthdayindia.org) before launch
+User-agent: *
+Allow: /
+Disallow: /thank-you
+Disallow: /thank-you.html
+
+Sitemap: https://www.earthdayindia.org/sitemap.xml

@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-11-01T18:19:17.555Z",
+  "pagesTested": 13,
+  "viewportsTested": 9,
+  "horizontalOverflows": [],
+  "consoleErrors": [],
+  "contrastResults": [
+    {
+      "element": "Hero .btn",
+      "color": "rgb(7, 7, 78)",
+      "background": "rgb(243, 115, 33)",
+      "contrast": "6.34",
+      "passesAA": true
+    }
+  ],
+  "interactiveChecks": []
+}

@@ -1,0 +1,47 @@
+# Image credits
+
+All photos are openly licensed images from Wikimedia Commons and are stored locally. Each one is a **placeholder** until the client's own Google Drive photos arrive.
+
+**To replace a photo:** drop the client photo into `_src/img/` under the same filename (it should be at least 1800 px wide), remove its row from `_src/credits.json`, and rebuild with `python _src/build.py`. The build creates the AVIF, WebP and JPG versions at 480, 800, 1200 and 1800 px.
+
+The same list is published at `/credits.html`.
+
+| Site file (replace with Drive photo) | Used for | Original | Author | Licence |
+|---|---|---|---|---|
+| `home-page-picture-1.jpg` | Hero slide 1 – Canopy Project (replace with Drive 'Home Page front 4' / Home Page Picture 1) | [Mangrove Vegetation of Sundarban, West Bengal, India 01.jpg](https://commons.wikimedia.org/wiki/File:Mangrove_Vegetation_of_Sundarban,_West_Bengal,_India_01.jpg) | Kingshuk Mondal | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `home-page-picture-2.jpg` | Hero slide 2 – Youth (replace with Home Page Picture 2) | [Tamil Nadu school kids.jpg](https://commons.wikimedia.org/wiki/File:Tamil_Nadu_school_kids.jpg) | McKay Savage from London, UK | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
+| `home-page-picture-3.jpg` | Hero slide 3 – Women Farmers (replace with Home Page Picture 3) | [Women Farmers Sowing in Karnataka, India.jpg](https://commons.wikimedia.org/wiki/File:Women_Farmers_Sowing_in_Karnataka,_India.jpg) | Vraj Acharya, WELL Labs | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `home-page-picture-4.jpg` | Hero slide 4 – Cleanup (replace with Home Page Picture 4) | [Volunteers clean up beach debris.jpg](https://commons.wikimedia.org/wiki/File:Volunteers_clean_up_beach_debris.jpg) | CapeHatterasNPS | [Public domain]() |
+| `show-panel-1.jpg` | Home show panel photo 1 | [Dense Mangrove Forest of the Sundarban Tiger Reserve during High Tide, West Bengal, India 02.jpg](https://commons.wikimedia.org/wiki/File:Dense_Mangrove_Forest_of_the_Sundarban_Tiger_Reserve_during_High_Tide,_West_Bengal,_India_02.jpg) | Kingshuk Mondal | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `show-panel-2.jpg` | Home show panel photo 2 | [DSCF0156Kerala rice fields.jpg](https://commons.wikimedia.org/wiki/File:DSCF0156Kerala_rice_fields.jpg) | Fenomenon123 | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| `show-panel-3.jpg` | Home show panel photo 3 | [Dal Lake, Srinagar, Jammu and Kashmir.jpg](https://commons.wikimedia.org/wiki/File:Dal_Lake,_Srinagar,_Jammu_and_Kashmir.jpg) | Dashrathgoyal85 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `show-panel-4.jpg` | Home show panel photo 4 | [Ganga Mahal Ghat Varanasi 1.jpg](https://commons.wikimedia.org/wiki/File:Ganga_Mahal_Ghat_Varanasi_1.jpg) | Philip Nalangan | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `show-panel-5.jpg` | Home show panel photo 5 | [Solar power plant at Dhanas Lake, Chandigarh, India 08.jpg](https://commons.wikimedia.org/wiki/File:Solar_power_plant_at_Dhanas_Lake,_Chandigarh,_India_08.jpg) | Harvinder Chandigarh | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `theme-2027.jpg` | Theme 2027 panel (replace with Drive 'Theme 2027') | [Farmers in kerala field.jpg](https://commons.wikimedia.org/wiki/File:Farmers_in_kerala_field.jpg) | Zuhairali | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `program-agriculture.jpg` | Programs – Sustainable Food and Agriculture | [Female farmers in India. 2022.jpg](https://commons.wikimedia.org/wiki/File:Female_farmers_in_India._2022.jpg) | Vinoth offl | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `program-canopy.jpg` | Programs – The Canopy Project | [Tree Plantation Drive - panoramio.jpg](https://commons.wikimedia.org/wiki/File:Tree_Plantation_Drive_-_panoramio.jpg) | Deepak Patil | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) |
+| `program-energy.jpg` | Programs – Clean Energy | [Traditional House Solar Zamtang Zanskar Jun24 A7CR 01119.jpg](https://commons.wikimedia.org/wiki/File:Traditional_House_Solar_Zamtang_Zanskar_Jun24_A7CR_01119.jpg) | This Photo was taken by Timothy A. Gonsalves.  Feel free to use my photos, but please mention me as the author.  I would much appreciate if you send me an email tagooty@yahoo.com or write on my talk page, for my information.  Please contact me before commercial use.
+
+
+
+Please do not upload an edited image here without consulting me.  I would like to make corrections only at my own source to ensure that the changes improve the image and are preserved.Otherwise you may upload an edited image with a new name. Please use one of the templates derivative or extract. | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `program-education.jpg` | Programs – Education | [Classroom in East Sikkim, India (3848315549).jpg](https://commons.wikimedia.org/wiki/File:Classroom_in_East_Sikkim,_India_(3848315549).jpg) | dhillan chandramowli | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) |
+| `program-youth.jpg` | Programs – Youth | [Rungta College International Students.jpg](https://commons.wikimedia.org/wiki/File:Rungta_College_International_Students.jpg) | Basantsatpathy | [CC0](https://creativecommons.org/publicdomain/zero/1.0/) |
+| `program-cleanup.jpg` | Programs – Cleanups and Circularity | [Juhu beach 2019.jpg](https://commons.wikimedia.org/wiki/File:Juhu_beach_2019.jpg) | Shishirdasika | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `program-faith.jpg` | Programs – Faith Sites | [Kashmir Gurdwaras - SEVA organisation - Sikh Environment Day 2012 (7215320010).jpg](https://commons.wikimedia.org/wiki/File:Kashmir_Gurdwaras_-_SEVA_organisation_-_Sikh_Environment_Day_2012_(7215320010).jpg) | EcoSikh | [CC BY 2.0](https://creativecommons.org/licenses/by/2.0) |
+| `program-earthday.jpg` | Programs – Earth Day | [Dal Lake, Srinagar 4.jpg](https://commons.wikimedia.org/wiki/File:Dal_Lake,_Srinagar_4.jpg) | Slyronit | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `program-climate.jpg` | Programs – Climate Change | [Mangrove Vegetation of Sundarban, West Bengal, India 05.jpg](https://commons.wikimedia.org/wiki/File:Mangrove_Vegetation_of_Sundarban,_West_Bengal,_India_05.jpg) | Kingshuk Mondal | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `program-women.jpg` | Programs – Women | [Women at work, Gujarat (cropped).jpg](https://commons.wikimedia.org/wiki/File:Women_at_work,_Gujarat_(cropped).jpg) | Bernard Gagnon | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) |
+| `program-fashion.jpg` | Programs – Sustainable Fashion | [Saree Weaving by Handloom 2.jpg](https://commons.wikimedia.org/wiki/File:Saree_Weaving_by_Handloom_2.jpg) | Pranayraj1985 | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `programs-main.jpg` | Programs page main picture | [Mangrove Vegetation of Sundarban, West Bengal, India 07.jpg](https://commons.wikimedia.org/wiki/File:Mangrove_Vegetation_of_Sundarban,_West_Bengal,_India_07.jpg) | Kingshuk Mondal | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `gallery-1.jpg` | Gallery | [Tourist Boat in Sundarbans, West Bengal, India 03.jpg](https://commons.wikimedia.org/wiki/File:Tourist_Boat_in_Sundarbans,_West_Bengal,_India_03.jpg) | Kingshuk Mondal | [CC BY 4.0](https://creativecommons.org/licenses/by/4.0) |
+| `gallery-2.jpg` | Gallery | [Kerala rice (2267490080).jpg](https://commons.wikimedia.org/wiki/File:Kerala_rice_(2267490080).jpg) | michael clarke stuff | [CC BY-SA 2.0](https://creativecommons.org/licenses/by-sa/2.0) |
+| `gallery-3.jpg` | Gallery | [Handloom Weaver in an exhibition 1.jpg](https://commons.wikimedia.org/wiki/File:Handloom_Weaver_in_an_exhibition_1.jpg) | Suyash.dwivedi | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `gallery-4.jpg` | Gallery | [Mentoring School Childrens.jpg](https://commons.wikimedia.org/wiki/File:Mentoring_School_Childrens.jpg) | Iamflag | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `gallery-5.jpg` | Gallery | [Varanasi 2010 ghats3.jpg](https://commons.wikimedia.org/wiki/File:Varanasi_2010_ghats3.jpg) | Marcin Białek | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) |
+| `gallery-6.jpg` | Gallery | [Mango tree flowers, Umaria district, MP, India.jpg](https://commons.wikimedia.org/wiki/File:Mango_tree_flowers,_Umaria_district,_MP,_India.jpg) | Yann (talk) | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| `assets/video/hero.mp4` | Hero slide 0 highlight video | [Aerial nature landscape](https://pixabay.com/videos/nature-forest-river-green-trees-4810/) | Pixabay / Pexels | [Free License](https://pixabay.com/service/license-summary/) |
+| `assets/earth/earth-day.jpg` | Interactive 3D Earth Globe map texture | [NASA Visible Earth Blue Marble](https://visibleearth.nasa.gov/) | NASA Goddard Space Flight Center | [Public domain](https://visibleearth.nasa.gov/) |
+| `assets/earth/earth-clouds.png` | Interactive 3D Earth Globe cloud layer texture | [NASA Visible Earth Cloud Map](https://visibleearth.nasa.gov/) | NASA Goddard Space Flight Center | [Public domain](https://visibleearth.nasa.gov/) |
+
+Logos and the brand mark come from the EARTHDAY.ORG brand toolkit that the client supplied. They are placeholders until the official Earth Day Network India logo files arrive.
