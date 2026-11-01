@@ -35,6 +35,12 @@
 Mobile LCP is 2.6–3.1 s on simulated slow 4G, driven by the hero photo. Performance scores vary by ±3 between runs.
 
 ### Fixed during QA
+- **Mobile navigation overlap with header/logo:** Dynamically calculates header bounding box via `updateNavTop()` and sets `--nav-top` so `.nav` starts exactly flush below `.site-header` on mobile viewports. Verified with 0 overlaps across all 23 nav links.
+- **3D Globe and Programme Locations vertical misalignment:** Realigned top edges and matched heights to 540px (`box-sizing: border-box`, `margin: 0`), resulting in 0.00px top and height difference between `#earth-canvas-container` and `.globe-places-dir`.
+- **Our Approach redesign (about.html):** Replaced 6-word horizontal flow with an authoritative 6-pillar methodology grid (`.approach-card`) featuring step numbers, titles, and rich descriptive copy from the client brief.
+- **Archive / Timeline redesign (about.html):** Fixed 4+1 row break into a continuous 5-milestone journey on desktop (`repeat(5, minmax(0, 1fr))`) and smooth horizontal scroll snapping on mobile/tablet, with 5 authentic photographic milestone cards.
+- **Awardees section certificates (index.html):** Replaced monogram tiles with 12 realistic framed award certificates and citations (`award-cert-heroes.jpg`, etc.) in `assets/img/awards/`.
+- **Root directory clean-up:** Moved all loose icons and image files to `assets/icons/` and `assets/img/`, while keeping `.git` completely intact.
 - **Header logo:** distorted aspect ratio (the flex item was shrinking). Fixed with explicit sizes and `flex:none`.
 - **Brand link:** its aria-label did not match the visible text. The aria-label was removed; the name now comes from the image alt and the visible text.
 - **Dropdown toggles:** were smaller than the 24 px minimum target size. Enlarged to 26×44.

@@ -10,14 +10,45 @@ FAQS_ABOUT = [
 ]
 
 def build():
-    flow = "".join(f'<li><strong>{s}</strong><span class="arr" aria-hidden="true">{icon("arrow-r")}</span></li>' for s in ["Education","Awareness","Engagement","Partnerships","Action","Recognition"])
+    approach_steps = [
+        ("01", "Education", "Fostering environmental literacy through school assemblies, Eco-Comics, and teacher training across India."),
+        ("02", "Awareness", "Inspiring public stewardship through nationwide Earth Day campaigns, Earth Murals, and media advocacy."),
+        ("03", "Engagement", "Mobilising youth champions, rural women, farmers, and students into active conservation stewards."),
+        ("04", "Partnerships", "Collaborating with 130+ institutions, universities, state forest departments, and civil society groups."),
+        ("05", "Action", "Delivering tangible ground impact: planting native biodiverse trees, cleaning river corridors, and solar transitions."),
+        ("06", "Recognition", "Honouring outstanding grassroots leaders, panchayats, and schools with 400+ Star Awards and citations.")
+    ]
+    flow_html = "".join(f'''<li class="approach-card reveal">
+  <div class="approach-num-wrap">
+    <span class="approach-num">{num}</span>
+    <span class="approach-dot" aria-hidden="true"></span>
+  </div>
+  <div class="approach-content">
+    <h3 class="approach-title">{title}</h3>
+    <p class="approach-desc">{desc}</p>
+  </div>
+</li>''' for num, title, desc in approach_steps)
+
     cta = "".join(f'<li>{s}</li>' for s in ["Adopt LiFE initiatives","Encourage a shift to renewable and cleaner energies","Minimise plastic use and manage plastic waste","Expand ways to reduce soil, water and air pollution","Expand the green canopy","Invest in widening the green economy","Promote climate education","Encourage natural farming practices"])
-    tl = [("1970","Global Earth Day movement begins","about-timeline-1970.jpg"),
-          ("2010","Earth Day Network India established","about-timeline-2010.jpg"),
-          ("2020","50th Anniversary digital mobilisation","about-timeline-2020.jpg"),
-          ("2026","Active across all Indian states","about-timeline-2026.jpg"),
-          ("2027","Food for Our Planet™ campaign","about-timeline-2027.jpg")]
-    tli = "".join(f'<li class="tl-item reveal"><span class="yr">{y}</span><figure class="frame ratio-43 archival"><div class="fi">{picture(img, f"Earth Day through the years ({y}) — {t}", "(max-width:640px) 100vw, 25vw")}</div></figure><p>{t}</p></li>' for y,t,img in tl)
+
+    tl = [
+        ("1970", "Global Movement", "Global Earth Day movement begins, mobilising 20 million citizens.", "about-timeline-1970.jpg"),
+        ("2010", "Inception in India", "Earth Day Network India established as a registered trust.", "about-timeline-2010.jpg"),
+        ("2020", "50th Anniversary", "Digital mobilisation connecting educators, youth, and institutions.", "about-timeline-2020.jpg"),
+        ("2026", "Pan-India Network", "Active across all Indian states and Union Territories.", "about-timeline-2026.jpg"),
+        ("2027", "Food for Our Planet™", "Global campaign for resilient soils, agriculture, and nourishment.", "about-timeline-2027.jpg")
+    ]
+    tli = "".join(f'''<li class="tl-item reveal">
+  <div class="tl-marker" aria-hidden="true"><span class="tl-dot"></span><span class="tl-line"></span></div>
+  <span class="yr">{y}</span>
+  <figure class="frame ratio-43 archival">
+    <div class="fi">{picture(img, f"Earth Day through the years ({y}) — {t}", "(max-width:640px) 75vw, (max-width:1024px) 35vw, 220px")}</div>
+  </figure>
+  <div class="tl-content">
+    <h3 class="tl-title">{t}</h3>
+    <p class="tl-desc">{desc}</p>
+  </div>
+</li>''' for y, t, desc, img in tl)
 
     # FAQ accordion items
     faq_items = []
@@ -70,8 +101,13 @@ def build():
 </div></section>
 
 <section class="section paper" id="approach" aria-labelledby="ap-h"><div class="wrap">
- <div class="section-head center"><span class="num">No. 01</span>{eyebrow("How we work")}<h2 id="ap-h">Our Approach</h2></div>
- <ol class="flow">{flow}</ol>
+ <div class="section-head center">
+  <span class="num">No. 01</span>
+  {eyebrow("How we work")}
+  <h2 id="ap-h">Our Approach</h2>
+  <p class="lede">A six-pillar methodology turning environmental commitment into measurable grassroots conservation across India.</p>
+ </div>
+ <ol class="approach-grid">{flow_html}</ol>
 </div></section>
 
 <section class="section paper-white" id="call-to-action" aria-labelledby="cta-h"><div class="wrap editorial">

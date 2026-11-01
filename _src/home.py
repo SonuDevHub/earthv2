@@ -122,27 +122,30 @@ def build():
     initial_label = "Highlight Video" if HERO_VIDEO else SLIDES[0][1]
 
     impact_items = "".join(f'<li class="impact reveal"><p class="n mb-0" data-count="{c}" data-dec="{d}" data-prefix="{p}" data-suffix="{s}" data-final="{disp}"><span class="sr-only">{disp}</span><span aria-hidden="true">{disp}</span></p><p class="t">{t}</p><p class="c">{cap}</p></li>' for c,d,p,s,disp,t,cap in IMPACT)
-    # Awardee headshot monogram tiles
-    head_monograms = [
-        ("HR", "Earth Day Hero", "Heroes"),
-        ("ML", "Municipal Leader", "Urban"),
-        ("WG", "Women's Group", "Women"),
-        ("RS", "Rising Star", "Youth"),
-        ("ES", "Earth Star", "Civic"),
-        ("VG", "Village Award", "Rural"),
-        ("CS", "Clean Cooking", "Energy"),
-        ("LF", "Litter Free", "Cleanups"),
-        ("SC", "Star Campus", "Campus"),
-        ("YE", "Earthpreneur", "Green Biz"),
-        ("PC", "Panchayat Star", "Local Gov"),
-        ("SR", "Special Honor", "Security")
+    # Awardee Recognition Certificates
+    award_certs = [
+        ("award-cert-heroes.jpg", "Earth Day Hero", "Heroes"),
+        ("award-cert-muni.jpg", "Municipal Leader", "Urban"),
+        ("award-cert-women.jpg", "Women's Group", "Women"),
+        ("award-cert-rising.jpg", "Rising Star", "Youth"),
+        ("award-cert-earthstar.jpg", "Earth Star", "Civic"),
+        ("award-cert-village.jpg", "Village Award", "Rural"),
+        ("award-cert-cooking.jpg", "Clean Cooking", "Energy"),
+        ("award-cert-litter.jpg", "Litter Free", "Cleanups"),
+        ("award-cert-campus.jpg", "Star Campus", "Campus"),
+        ("award-cert-earthpreneur.jpg", "Earthpreneur", "Green Biz"),
+        ("award-cert-panchayat.jpg", "Panchayat Star", "Local Gov"),
+        ("award-cert-security.jpg", "Special Honor", "Security")
     ]
-    heads = "".join(f'''<li class="headshot">
-  <div class="ph monogram-avatar" title="{title} — {cat}">
-    <span class="mono-initials">{mono}</span>
+    certs_html = "".join(f'''<li class="cert-item reveal">
+  <div class="cert-card-wrap">
+    <div class="cert-thumb">
+      {picture(img, f"Certificate of Recognition — {title} ({cat})", "(max-width:640px) 45vw, (max-width:980px) 25vw, 140px")}
+    </div>
+    <span class="cert-title">{title}</span>
+    <span class="cert-cat">{cat}</span>
   </div>
-  <span>{title}</span>
-</li>''' for mono, title, cat in head_monograms)
+</li>''' for img, title, cat in award_certs)
 
     strip_alts = ["Dense mangrove forest of the Sundarban Tiger Reserve, West Bengal","Rice fields in Kerala — sustainable agriculture India","Dal Lake, Srinagar — lake cleanups in India","Ganga Mahal Ghat, Varanasi — Ganga cleanup India","Solar power at Dhanas Lake, Chandigarh — clean energy India"]
     strip = "".join(f'<li class="{"archival archival-hover" if i in (1,3) else ""}">{picture(f"show-panel-{i+1}.jpg", a, "(max-width:640px) 20vw, 20vw")}</li>' for i,a in enumerate(strip_alts))
@@ -393,7 +396,11 @@ def build():
 
 <!-- SECTION 6: AWARDEES (Light - paper) -->
 <section class="section paper" id="awardees" aria-labelledby="aw-h"><div class="wrap awardees">
- <div><h3 class="sr-only">Awardee headshots (placeholders)</h3><ul class="headshots">{heads}</ul><p class="notice">Placeholder headshots — 10–12 awardee photos to be supplied by the client.</p></div>
+ <div>
+  <h3 class="sr-only">Star Awards &amp; Recognition Certificates</h3>
+  <ul class="certs-grid">{certs_html}</ul>
+  <p class="notice">Official Star Awards &amp; Recognitions — citations and certificates presented to environmental champions across India.</p>
+ </div>
  <div class="reveal">{eyebrow("Awards &amp; Recognitions","left")}<p class="big-stat mb-0">400<em>+</em></p><h2 id="aw-h" class="big-stat-title">Star Awards and recognitions presented</h2>
   <p class="lede">to villages, women's groups, environmental leaders, clean-cooking champions, educational institutions, municipalities and religious sites advancing sustainability.</p>
   <a class="btn solid-navy" href="awards.html" data-track="CTA: View the Awards">View the Awards {ARROW}</a></div>

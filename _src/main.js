@@ -33,8 +33,21 @@
 
   /* ---------- Navigation: mobile panel + disclosure dropdowns ---------- */
   var toggle = d.querySelector(".menu-toggle");
+  var siteHeader = d.querySelector(".site-header");
+  function updateNavTop() {
+    if (siteHeader) {
+      var rect = siteHeader.getBoundingClientRect();
+      var topVal = Math.max(0, Math.round(rect.bottom));
+      root.style.setProperty("--nav-top", topVal + "px");
+    }
+  }
+  updateNavTop();
+  window.addEventListener("resize", updateNavTop);
+  window.addEventListener("scroll", updateNavTop, { passive: true });
+
   function closeMenu() { body.classList.remove("menu-open"); if (toggle) { toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "Open menu"); } }
   if (toggle) toggle.addEventListener("click", function () {
+    updateNavTop();
     var open = body.classList.toggle("menu-open");
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");

@@ -232,10 +232,37 @@ async function runVerification() {
   const mobCheckPage = await mobCheckCtx.newPage();
   await mobCheckPage.goto(`${BASE_URL}/index.html`, { waitUntil: 'networkidle' });
 
+  const headerOverlapCheck = await mobCheckPage.evaluate(() => {
+    const toggle = document.querySelector('.menu-toggle');
+    const header = document.querySelector('.site-header');
+    const brand = document.querySelector('.brand');
+    const nav = document.querySelector('.nav');
+    if (!toggle || !header || !brand || !nav) return { pass: false, reason: 'Elements missing' };
+    
+    toggle.click(); // open menu
+    const headerRect = header.getBoundingClientRect();
+    const brandRect = brand.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+
+    // Nav top must start at or below header bottom (tolerance 1px)
+    const navBelowHeader = navRect.top >= (headerRect.bottom - 1);
+    const navBelowBrand = navRect.top >= (brandRect.bottom - 1);
+
+    return {
+      pass: navBelowHeader && navBelowBrand,
+      headerBottom: headerRect.bottom,
+      brandBottom: brandRect.bottom,
+      navTop: navRect.top,
+      diff: navRect.top - headerRect.bottom
+    };
+  });
+  console.log(`  Mobile Menu Header/Brand Overlap Check: Pass=${headerOverlapCheck.pass} (nav.top=${headerOverlapCheck.navTop}px, header.bottom=${headerOverlapCheck.headerBottom}px)`);
+
   const menuOverlapResults = await mobCheckPage.evaluate(() => {
     const toggle = document.querySelector('.menu-toggle');
     if (!toggle) return { opened: false, overlaps: [] };
-    toggle.click(); // open menu
+    // toggle already clicked, check if open
+    if (!document.body.classList.contains('menu-open')) toggle.click();
 
     // Open first dropdown accordion to test expanded submenus
     const firstDdBtn = document.querySelector('.nav .dd-btn');
@@ -279,6 +306,43 @@ async function runVerification() {
   }
   await mobCheckCtx.close();
 
+  // Test Globe Container and Places Directory Horizontal Alignment at Desktop
+  console.log('\n--- Testing 3D Globe & Places Directory Alignment ---');
+  const globeAlignCheck = await testPage.evaluate(() => {
+    const globe = document.getElementById('earth-canvas-container');
+    const places = document.querySelector('.globe-places-dir');
+    if (!globe || !places) return { pass: false, reason: 'Elements not found' };
+    const rGlobe = globe.getBoundingClientRect();
+    const rPlaces = places.getBoundingClientRect();
+    const topDiff = Math.abs(rGlobe.top - rPlaces.top);
+    const heightDiff = Math.abs(rGlobe.height - rPlaces.height);
+    return {
+      pass: topDiff <= 1.5,
+      globeTop: rGlobe.top,
+      placesTop: rPlaces.top,
+      topDiff,
+      globeHeight: rGlobe.height,
+      placesHeight: rPlaces.height,
+      heightDiff
+    };
+  });
+  console.log(`  Globe & Places Alignment Check: Pass=${globeAlignCheck.pass} (Top diff=${globeAlignCheck.topDiff.toFixed(2)}px, Height diff=${globeAlignCheck.heightDiff.toFixed(2)}px)`);
+
+  // Test Award Certificates Grid on Home
+  console.log('\n--- Testing Award Certificates Grid on Home ---');
+  const certsCheck = await testPage.evaluate(() => {
+    const grid = document.querySelector('.certs-grid');
+    if (!grid) return { pass: false, reason: 'certs-grid not found' };
+    const items = grid.querySelectorAll('.cert-item');
+    const images = grid.querySelectorAll('.cert-thumb img');
+    return {
+      pass: items.length === 12 && images.length === 12,
+      count: items.length,
+      firstImg: images[0] ? images[0].getAttribute('src') : null
+    };
+  });
+  console.log(`  Award Certificates Check: Pass=${certsCheck.pass} (Count=${certsCheck.count}, First=${certsCheck.firstImg})`);
+
   // C. Featured Projects Slider
   console.log('  Testing Featured Projects Slider...');
   await testPage.evaluate(() => {
@@ -314,6 +378,28 @@ async function runVerification() {
     return document.querySelectorAll('.init-row').length;
   });
   console.log(`  Initiatives rows count: ${initCount} (expected 8)`);
+
+  // Test Approach Section & Timeline Section on About Page
+  console.log('\n--- Testing Approach & Timeline Sections on About Page ---');
+  await testPage.goto(`${BASE_URL}/about.html`, { waitUntil: 'networkidle' });
+  const aboutChecks = await testPage.evaluate(() => {
+    const approachCards = document.querySelectorAll('.approach-card');
+    const timelineItems = document.querySelectorAll('.timeline .tl-item');
+    
+    // Check if all 5 timeline milestones share the same top offset on desktop (single row)
+    const tlTops = Array.from(timelineItems).map(item => Math.round(item.getBoundingClientRect().top));
+    const allSameRow = tlTops.length === 5 && tlTops.every(t => Math.abs(t - tlTops[0]) <= 2);
+
+    return {
+      approachCount: approachCards.length,
+      approachPass: approachCards.length === 6,
+      timelineCount: timelineItems.length,
+      timelinePass: timelineItems.length === 5 && allSameRow,
+      tlTops
+    };
+  });
+  console.log(`  Our Approach 6-Pillar Check: Pass=${aboutChecks.approachPass} (Count=${aboutChecks.approachCount})`);
+  console.log(`  Timeline 5-Milestone Single-Row Check: Pass=${aboutChecks.timelinePass} (Count=${aboutChecks.timelineCount}, Tops=[${aboutChecks.tlTops.join(', ')}])`);
 
   // 5. Test FAQ Accordions
   console.log('\n--- Testing FAQ Accordions on About & Join Us ---');

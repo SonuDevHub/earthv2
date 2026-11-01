@@ -49,30 +49,25 @@ def logos_and_icons():
     for s in (16, 32, 48):
         icon_img = on_bg(s, .06)
         icon_img.save(os.path.join(I, f"favicon-{s}.png"))
-        icon_img.save(os.path.join(ROOT, f"favicon-{s}.png"))
-    # Keep /favicon.ico at root and copy to assets/icons/
+    # Save favicon.ico to assets/icons/ and root for browser fallback
     ico = on_bg(48, .06)
-    ico.save(os.path.join(ROOT, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
     ico.save(os.path.join(I, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
+    ico.save(os.path.join(ROOT, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48)])
     
     ati = on_bg(180, .12).convert("RGB")
-    ati.save(os.path.join(ROOT, "apple-touch-icon.png"))
     ati.save(os.path.join(I, "apple-touch-icon.png"))
     
     for s, name in ((192, "icon-192.png"), (512, "icon-512.png")):
         ic = on_bg(s, .12)
-        ic.save(os.path.join(ROOT, name))
         ic.save(os.path.join(I, name))
         
     maskable = on_bg(512, .22)
-    maskable.save(os.path.join(ROOT, "icon-maskable-512.png"))
     maskable.save(os.path.join(I, "icon-maskable-512.png"))
     
     # SVG favicon
     import base64, io
     b = io.BytesIO(); sq.resize((128, 128), Image.LANCZOS).save(b, "PNG", optimize=True)
     svg = f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#fff"/><image x="4" y="4" width="56" height="56" href="data:image/png;base64,{base64.b64encode(b.getvalue()).decode()}"/></svg>'
-    open(os.path.join(ROOT, "favicon.svg"), "w").write(svg)
     open(os.path.join(I, "favicon.svg"), "w").write(svg)
     
     json.dump({"name": ORG, "short_name": "EDN India", "start_url": "/", "scope": "/", "display": "standalone", "background_color": "#ffffff", "theme_color": "#07074E", "lang": "en-IN",
@@ -80,7 +75,7 @@ def logos_and_icons():
                          {"src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png"},
                          {"src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}]},
               open(os.path.join(ROOT, "site.webmanifest"), "w"), indent=2)
-    print("logos and icons (root and assets/icons/) done")
+    print("icons organized in assets/icons/ done")
 
 def data_sync():
     src_markers = os.path.join(SRC, "data", "markers.json")
