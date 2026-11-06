@@ -1079,3 +1079,27 @@ body{overflow-x:clip}
 .impact:hover .impact-bg{opacity:.34;transform:scale(1.04)}
 .impact:nth-child(2) .n{font-size:clamp(1.45rem,1.95vw,1.75rem);white-space:normal;line-height:1.35}
 @media (max-width:980px){.impact:nth-child(2) .n{font-size:clamp(1.9rem,6vw,2.4rem)}}
+
+/* Client round 2 */
+.impact-bg{opacity:.12}
+.impact:hover .impact-bg{opacity:.17}
+.nav .nav-disabled{cursor:default;opacity:.55}
+.nav .nav-disabled:hover{text-decoration:none;color:var(--navy)}
+.footer-disabled{color:rgba(255,255,255,.55);font-size:.9rem;cursor:default}
+.contact-list a,.contact-list li{overflow-wrap:anywhere}
+/* Events on blue */
+#events-preview .event-boxes{border-color:var(--rule-light)}
+#events-preview .event-box:first-child{background:var(--navy-2)}
+#events-preview .event-box{color:var(--ink)}
+#events-preview .event-box:first-child{color:#fff}
+#events-preview .event-box .link-arrow{color:var(--navy)}
+#events-preview .event-box:first-child .link-arrow{color:#fff}
+.event-soon{font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* Network */
+.network-panel{align-self:start;padding:clamp(28px,4vw,48px);background:var(--flash);border-left:3px solid var(--green)}
+.network-panel h3{margin-bottom:8px}
+.network-soon{display:block;font-weight:900;font-size:clamp(1.2rem,2vw,1.6rem);letter-spacing:.05em;text-transform:uppercase;color:var(--navy);margin-bottom:6px}
+
+#events-preview .event-box h3{color:var(--navy)}
+#events-preview .event-box:first-child h3{color:#fff}
+a.facade{color:#fff;text-decoration:none}

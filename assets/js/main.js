@@ -212,7 +212,7 @@
   }
 
   /* ---------- Click-to-load embeds ---------- */
-  $$(".facade").forEach(function (btn) {
+  $$("button.facade").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var src = btn.dataset.src, box = btn.parentElement;
       if (!src) { var f = btn.querySelector(".fine"); if (f) f.textContent = "Not connected yet — the client's channel/post URL still needs to be added."; return; }
