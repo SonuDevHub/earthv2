@@ -12,8 +12,7 @@
 /volunteer                 /join-us.html#volunteer 301
 /contact                   /#contact            301
 /privacy                   /privacy-policy.html 301
-# Keep build sources and QA artefacts private (they live in the repo but must not be served)
-/_src/*                    /404.html            404!
+# Keep QA artefacts private (they live in the repo but must not be served)
 /qa/*                      /404.html            404!
 /screenshots/*             /404.html            404!
 /.git/*                    /404.html            404!

@@ -13,11 +13,12 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), fullscreen=(self "https://www.youtube-nocookie.com")
   Cross-Origin-Opener-Policy: same-origin
 
-# Long-lived, immutable: content-hashed CSS/JS and fonts (file names change whenever content changes)
+# CSS/JS keep the same file names when edited, so browsers must revalidate them
 /assets/css/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
 /assets/js/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=0, must-revalidate
+# Fonts never change
 /assets/fonts/*
   Cache-Control: public, max-age=31536000, immutable
 /assets/vendor/*

@@ -2,13 +2,13 @@
 
 This is a static, multi-page website built with HTML, CSS and vanilla JS. It has no framework and does not need a build step to view.
 
-- **To view it:** open `index.html`, or serve the folder with `python3 -m http.server`.
+- **To view it:** open `http://localhost/earth-day/` through XAMPP, or open `index.html` directly.
 - **To deploy it:** publish this folder as-is on Netlify. The folder includes `_headers`, `_redirects` and `netlify.toml`.
 
 ## Pages & Components
 | Page | File | Notes & Components |
 |---|---|---|
-| Home | `index.html` | Hero with slide 0 video & mobile single-button layout, intro, 3D interactive Earth Globe with category filters & bottom sheet, Guiding Our Path statement band with offset photography, impact counter strip, awardees block, archival photo strip, Theme 2027 panel, initiatives list with desktop hover preview, events preview, featured projects 6-slide carousel with progress bar, major programs carousel, network monogram leadership preview, slow partners marquee of 18 named partners, YouTube/Instagram click-to-load embeds, OpenStreetMap + news, quotes, footer with newsletter form |
+| Home | `index.html` | Hero slideshow (5 photos), intro, show panel (5 square photos), impact counters, awardee collage, Theme 2027 panel, events boxes, major programs carousel, partner marquee and logo image, YouTube/Instagram click-to-load embeds, news, quotes, footer with newsletter form. The 3D globe is commented out |
 | About | `about.html` | Story, 4-stat impact strip (55+ years, 192 countries, 1B+ mobilized, 130+ partners), approach flow, call to action, Trustees note, timeline, gallery, trust & governance FAQ accordion (`FAQPage` schema), closing CTA band |
 | Programs | `programs.html` | Stats strip (3.6M+ trees, 5,00,000+ farmers, 8,50,000+ completions, 1,00,000+ schools), EDO Theme, all 10 brief programmes (`#agriculture`, `#canopy`, `#energy`, `#education`, `#youth`, `#cleanup`, `#faith-sites`, `#earth-day`, `#climate-change`, `#women`, `#fashion`), partners slot, gallery, closing CTA band |
 | Network | `network.html` | Stats strip (300+ youth ambassadors, 130+ partners, 400+ awards, 147.5M outreach), `#ambassadors`, `#advisors`, `#canopy-experts`, `#mfmv`, `#artists`, `#athletes`, `#partners`, closing CTA band |
@@ -19,44 +19,27 @@ This is a static, multi-page website built with HTML, CSS and vanilla JS. It has
 | Contact | (footer `#contact`) | Accessible footer with Write to Us form, Newsletter subscription form, NITI Aayog/12A/CSR-1 badges, social links, and legal links |
 | Legal / utility | `privacy-policy.html`, `terms.html`, `credits.html`, `thank-you.html` (noindex), `404.html` (noindex) | Complete privacy policy, terms, credits with full licensing details |
 
-## Editing and rebuilding
-The HTML is generated from the Python sources in `_src/`. Edit those files, not the generated HTML.
-
-```
-pip install pillow          # Pillow with AVIF support (>= 11)
-npm i -g esbuild            # used for CSS/JS minification (build.py calls `npx esbuild`)
-python _src/build.py
-```
+## Editing
+The site is plain HTML, CSS and JS with no build step. Edit the files directly and refresh the browser.
 
 | File | Purpose |
 |---|---|
-| `_src/common.py` | **Config constants**, header/nav/footer, forms, JSON-LD |
-| `_src/home.py`, `about.py`, `programs.py`, `inner.py`, `legal.py` | Page content (copy taken verbatim from the client brief) |
-| `_src/style.css`, `_src/main.js` | Source CSS/JS. The build minifies them to `assets/css/style.<hash>.min.css` and `assets/js/main.<hash>.min.js` |
-| `_src/img/*.jpg` | Original photos and badges. The build creates AVIF, WebP and JPG versions in `assets/img/<group>/` |
-| `_src/data/credits.json` | Image credits (feeds `credits.html` and `docs/IMAGE_CREDITS.md`) |
-| `_src/data/markers.json` | 3D Interactive Earth Globe & OSM map marker datasets |
+| `*.html` | Each page. The header and footer are repeated in every page, so change them in all of them |
+| `assets/css/style.css` | All styles, including the font-face rules |
+| `assets/js/main.js` | All scripts |
+| `assets/img/<group>/` | Photos in AVIF, WebP and JPG sizes. Each `<picture>` lists its own files |
+| `assets/earth/markers.json` | Marker data for the 3D globe |
 
-### Config constants (`_src/common.py`)
-| Constant | Current value | Action |
-|---|---|---|
-| `ORG` | `Earth Day Network India` | Single source for the organisation name |
-| `BASE_URL` | `https://www.earthdayindia.org` | **TODO: confirm the real domain.** Used for canonicals, OG, sitemap and robots |
-| `SOCIAL` | all empty | **TODO: add official URLs.** These also fill JSON-LD `sameAs`. Empty links are inert |
-| `CONTACT` | address/email/phone empty | **TODO: supply.** The site shows a "TODO" tag until then. Keep the NAP identical on the Google Business Profile |
-| `YOUTUBE_ID`, `INSTAGRAM_POST` | empty | **TODO:** the video ID and post URL for the click-to-load embeds |
-| `GLOBAL_THEME_URL` | https://www.earthday.org/earth-day-2027/ | From the brief |
+The 3D globe section is commented out in `index.html`. Remove the two comment lines around it to bring it back.
 
 ## Placeholders still needed from the client
 Every placeholder is visibly labelled on the site, so nothing passes as real content.
-1. **Photos:** the Google Drive photos replace the placeholder images. Use the same filenames (e.g. `home-page-picture-1.jpg` … `-4`, `show-panel-1…5`, `program-*.jpg`, `gallery-1…6`, `theme-2027.jpg`, badges and cards). See `docs/IMAGE_CREDITS.md`.
-2. **Official logo** (navy + white versions) and the **Earth Day 2027 theme logo** for the footer slot.
-3. **10–12 awardee headshots**, plus names for the home "400+ awardees" block.
-4. **Combined partner-logo image** (home, Programs, Join Us).
+1. **Photos:** still needed for Sustainable Fashion, the Network groups and the E-Racing Car show-panel slot.
+2. **More awardee headshots:** the home collage has 8 people; the document asks for 10–12.
 5. **Social media URLs**, plus a **YouTube video ID** and an **Instagram post URL**.
 6. **Address, phone, email** (footer + JSON-LD). NGO Darpan / 12A / CSR-1 registration numbers if they should be shown.
 7. **Timeline entries** (About). The brief only gives 2010 Inception and 2020 Online.
-8. **Testimonials** (3) and **news items** (4 on home, list on Events).
+8. **News items** (4 on home, list on Events).
 9. **Event dates, venues and pages** for upcoming and past events.
 10. **Resource files** (reports, brochure, PPT, branding kit, e-books, videos, courses, eco-games, merch, books).
 11. **Network profiles** (MFMV, artists, athletes, ambassadors, advisors): names, roles, photos.
@@ -66,19 +49,16 @@ Every placeholder is visibly labelled on the site, so nothing passes as real con
 15. **Legal review** of `privacy-policy.html` and `terms.html`. Both are marked as drafts.
 
 ## Brief inconsistencies / open questions
-- The home impact figure says **3.0+ million** saplings; the Programs copy says **3.6 million**. Both are kept as written. Which is correct?
+- The home impact figure says **3.7+ million** saplings; the Programs copy says **3.6 million**. Both are kept as written. Which is correct?
 - The home figure says **8,51,000+** Energy Literacy completions; Programs says **8,50,000**. Which is correct?
-- One Clean Energy sentence in the brief stops at "The programme …". It is shown with a visible "[…sentence incomplete in the brief — text to be supplied]" marker.
-- Award group mapping (Energy / Institutional / Group / Geographical / Individual) against the 14 categories needs confirmation.
-- Which programme the "EDO Theme" dropdown item should point to. It currently goes to the `#edo-theme` panel on Programs.
-- Confirm the wording of the home pull quote and the Trustees note sign-off.
+- One Clean Energy sentence in the document stops at "The programme". The fragment is left out until the full sentence is supplied.
 
 ## Design notes and deliberate decisions
 - **Brand:** follows the EARTHDAY.ORG toolkit: Oxford Blue #07074E, Blaze Orange #F37321 (CTAs), Steel Blue, Light Sea Green, Chrome Yellow, Anti-Flash White; Montserrat; uppercase, letter-spaced headings; square corners.
 - **Deviation:** one serif, *Cormorant Garamond*, is used **only** for pull quotes, the Trustees note and testimonials, to give the "heritage meets modern" feel the brief asked for. To remove it, delete the Cormorant font-face and `--serif` rules in `style.css`.
 - **Contrast:** orange buttons use **navy text** (6.3:1). White on orange is only 2.9:1, which fails WCAG AA.
 - **No hreflang:** the site has a single language (English, `lang="en-IN"`). Add hreflang if a Hindi version is created.
-- **No cookie banner:** the site sets no cookies. Fonts are self-hosted, analytics are cookieless (Umami/Plausible, still disabled), and YouTube/Instagram load only after the visitor clicks (facade). OSM map tiles are requested only when the map scrolls into view; the privacy policy discloses this. Revisit if any cookie-setting tool is added.
+- **No cookie banner:** the site sets no cookies. Fonts are self-hosted, analytics are cookieless (Umami/Plausible, still disabled), and YouTube/Instagram load only after the visitor clicks (facade). Revisit if any cookie-setting tool is added.
 - **HTTPS** is provided by the host (Netlify, Let's Encrypt). `_headers` adds HSTS and `upgrade-insecure-requests`.
 - **CSP** (`_headers`) is strict: `script-src 'self'`, no inline scripts. When analytics is enabled, add its host to `script-src` and `connect-src` (e.g. `https://cloud.umami.is` or `https://plausible.io`). If reCAPTCHA is enabled on Netlify Forms, add `https://www.google.com https://www.gstatic.com` to `script-src` and `frame-src`. Instructions are in the comments in `_headers`.
 - **Analytics hooks:** `main.js` sends events (CTA clicks, form submits, tel/mailto taps, outbound social and outbound links) through `window.umami` or `window.plausible` if one is present. Until then it does nothing. There are no ad pixels and no GTM.
@@ -89,4 +69,4 @@ Every placeholder is visibly labelled on the site, so nothing passes as real con
 - `QA_REPORT.md`: test results and TODOs.
 - `qa/`: Lighthouse reports, axe/console JSON, HTML validation and link-check output.
 - `screenshots/`: desktop (1280) and mobile (390) full-page screenshots of every page.
-- `_redirects` / `netlify.toml`: 301 examples (TODO: map the real old URLs) and 404 rules for the source/QA folders.
+- `_redirects` / `netlify.toml`: 301 examples (TODO: map the real old URLs) and 404 rules for the QA folders.
