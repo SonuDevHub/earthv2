@@ -1,11 +1,12 @@
 # Netlify headers — Earth Day Network India
 # HTTPS: Netlify provisions Let's Encrypt certificates and redirects HTTP→HTTPS automatically once "Force HTTPS" is on (see LAUNCH_CHECKLIST).
 # CSP allows only what the site uses: self-hosted assets, OpenStreetMap tiles, click-to-load YouTube (nocookie) / Instagram embeds.
-# ANALYTICS (not enabled yet): when you enable Umami or Plausible, add its host to script-src and connect-src,
+# ANALYTICS: Google Tag Manager is enabled. The script-src hash matches the inline dataLayer snippet in each page's head; if that snippet changes, update the hash.
+# Custom HTML tags added in GTM need their own hosts or hashes here. For Umami or Plausible, add its host to script-src and connect-src,
 #   e.g. script-src 'self' https://cloud.umami.is; connect-src 'self' https://api-gateway.umami.dev   (or https://plausible.io for both)
 # reCAPTCHA (optional): add https://www.google.com https://www.gstatic.com to script-src and frame-src.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org; font-src 'self'; connect-src 'self'; frame-src https://www.youtube-nocookie.com https://www.instagram.com; media-src 'self'; worker-src 'self' blob:; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'sha256-jYHg7tXSuuVUqjy+JeRT8vyG97+Spkw5IFHdQEBbmrw=' https://*.googletagmanager.com; style-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.googletagmanager.com https://*.google-analytics.com; font-src 'self'; connect-src 'self' https://*.googletagmanager.com https://*.google-analytics.com https://*.analytics.google.com; frame-src https://www.youtube-nocookie.com https://www.instagram.com; media-src 'self'; worker-src 'self' blob:; manifest-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff

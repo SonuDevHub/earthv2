@@ -218,12 +218,45 @@
       if (!src) { var f = btn.querySelector(".fine"); if (f) f.textContent = "Not connected yet — the client's channel/post URL still needs to be added."; return; }
       var ifr = d.createElement("iframe");
       ifr.src = src; ifr.title = btn.dataset.title || "Embedded media"; ifr.loading = "lazy";
-      ifr.allow = "accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen";
+      ifr.allow = "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen";
       ifr.referrerPolicy = "strict-origin-when-cross-origin";
       box.replaceChild(ifr, btn); ifr.focus && ifr.focus();
       track("Embed loaded", { type: btn.dataset.kind });
     });
   });
+
+  /* ---------- Pop-up image viewer ---------- */
+  var lbLinks = $$("a[data-lightbox]");
+  if (lbLinks.length && typeof HTMLDialogElement === "function") {
+    var lb = d.createElement("dialog");
+    lb.className = "lightbox";
+    lb.innerHTML = '<button class="lb-close" type="button" aria-label="Close">&times;</button><img alt=""><p class="lb-cap"></p>';
+    d.body.appendChild(lb);
+    var lbImg = lb.querySelector("img"), lbCap = lb.querySelector(".lb-cap");
+    lb.querySelector(".lb-close").addEventListener("click", function () { lb.close(); });
+    lb.addEventListener("click", function (e) { if (e.target === lb) lb.close(); });
+    lbLinks.forEach(function (a) {
+      a.addEventListener("click", function (e) {
+        e.preventDefault();
+        lbImg.src = a.getAttribute("href");
+        lbImg.alt = a.dataset.caption || "";
+        lbCap.textContent = a.dataset.caption || "";
+        lb.showModal();
+      });
+    });
+  }
+
+  /* ---------- Events: show three, "Explore more" shows the rest ---------- */
+  var engGrid = d.getElementById("eng-grid"), engMore = d.querySelector(".eng-more");
+  if (engGrid && engMore && engGrid.children.length > 3) {
+    engGrid.classList.add("is-collapsed");
+    engMore.hidden = false;
+    engMore.addEventListener("click", function () {
+      var open = engGrid.classList.toggle("is-collapsed") === false;
+      engMore.setAttribute("aria-expanded", open ? "true" : "false");
+      engMore.firstChild.nodeValue = open ? "Show less " : "Explore more ";
+    });
+  }
 
   /* ---------- Forms: progressive validation ---------- */
   $$("form[data-validate]").forEach(function (form) {

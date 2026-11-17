@@ -45,7 +45,7 @@ Every placeholder is visibly labelled on the site, so nothing passes as real con
 11. **Network profiles** (MFMV, artists, athletes, ambassadors, advisors): names, roles, photos.
 12. **Award bios / winners**, and confirmation of which categories sit under which award group.
 13. **CSR details** for the Join Us page.
-14. **Analytics choice** (Umami or Plausible) and the site ID.
+14. **Cookie consent decision** now that Google Tag Manager is live.
 15. **Legal review** of `privacy-policy.html` and `terms.html`. Both are marked as drafts.
 
 ## Brief inconsistencies / open questions
@@ -58,10 +58,10 @@ Every placeholder is visibly labelled on the site, so nothing passes as real con
 - **Deviation:** one serif, *Cormorant Garamond*, is used **only** for pull quotes, the Trustees note and testimonials, to give the "heritage meets modern" feel the brief asked for. To remove it, delete the Cormorant font-face and `--serif` rules in `style.css`.
 - **Contrast:** orange buttons use **navy text** (6.3:1). White on orange is only 2.9:1, which fails WCAG AA.
 - **No hreflang:** the site has a single language (English, `lang="en-IN"`). Add hreflang if a Hindi version is created.
-- **No cookie banner:** the site sets no cookies. Fonts are self-hosted, analytics are cookieless (Umami/Plausible, still disabled), and YouTube/Instagram load only after the visitor clicks (facade). Revisit if any cookie-setting tool is added.
+- **Analytics:** Google Tag Manager (`GTM-T87ZHV6B`) and the Search Console verification tag are in the head of every page. Tools added through GTM may set cookies, and the site has no cookie banner yet.
 - **HTTPS** is provided by the host (Netlify, Let's Encrypt). `_headers` adds HSTS and `upgrade-insecure-requests`.
-- **CSP** (`_headers`) is strict: `script-src 'self'`, no inline scripts. When analytics is enabled, add its host to `script-src` and `connect-src` (e.g. `https://cloud.umami.is` or `https://plausible.io`). If reCAPTCHA is enabled on Netlify Forms, add `https://www.google.com https://www.gstatic.com` to `script-src` and `frame-src`. Instructions are in the comments in `_headers`.
-- **Analytics hooks:** `main.js` sends events (CTA clicks, form submits, tel/mailto taps, outbound social and outbound links) through `window.umami` or `window.plausible` if one is present. Until then it does nothing. There are no ad pixels and no GTM.
+- **CSP** (`_headers`) allows `self`, Google Tag Manager and one hash for the inline `dataLayer` snippet. Custom HTML tags added in GTM need their own CSP entries. When analytics is enabled, add its host to `script-src` and `connect-src` (e.g. `https://cloud.umami.is` or `https://plausible.io`). If reCAPTCHA is enabled on Netlify Forms, add `https://www.google.com https://www.gstatic.com` to `script-src` and `frame-src`. Instructions are in the comments in `_headers`.
+- **Analytics hooks:** `main.js` sends events (CTA clicks, form submits, tel/mailto taps, outbound social and outbound links) through `window.umami` or `window.plausible` if one is present. Until then it does nothing.
 - **Forms:** Netlify Forms (`data-netlify`, honeypot `bot-field`, POST to `/thank-you`). JS validation is added on top of native HTML validation, so the forms also work without JS. Set the notification email in Netlify → Forms.
 
 ## Other files
